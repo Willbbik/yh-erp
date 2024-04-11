@@ -1,9 +1,12 @@
 package com.yh.erp.domain.model.quotation;
 
 import com.yh.erp.domain.model.company.CompanyInfo;
+import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_QUOTATION")
@@ -52,5 +55,12 @@ public class Quotation {
 
     @Embedded
     private CompanyInfo companyInfo;
+
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+
+    @Column(name = "del_yn")
+    @Enumerated(EnumType.STRING)
+    private YesOrNo delYn;
 
 }

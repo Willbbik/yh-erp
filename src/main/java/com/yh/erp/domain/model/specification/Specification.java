@@ -1,5 +1,6 @@
 package com.yh.erp.domain.model.specification;
 
+import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,5 +41,9 @@ public class Specification {
 
     @Column(name = "create_at")
     private LocalDateTime createAt;
+
+    @Column(name = "del_yn")
+    @Enumerated(EnumType.STRING)
+    private YesOrNo delYn;
 
 }
