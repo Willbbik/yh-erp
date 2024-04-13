@@ -1,5 +1,6 @@
 package com.yh.erp.domain.model.company;
 
+import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,9 @@ public class Company {
 
     @Embedded
     private CompanyInfo companyInfo;
+
+    @Column(name = "del_yn")
+    @Enumerated(EnumType.STRING)
+    private YesOrNo delYn;
 
 }

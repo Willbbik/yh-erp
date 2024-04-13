@@ -1,7 +1,5 @@
 package com.yh.erp.domain.model.product;
 
-import com.yh.erp.domain.model.company.CompanyInfo;
-import com.yh.erp.domain.model.quotation.QuotationType;
 import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,8 +28,8 @@ public class Product {
     @Column(name = "price")
     private Long price;
 
-    @Column(name = "main_image")
-    private String mainImage;
+    @Column(name = "main_image_full_path")
+    private String mainImageFullPath;
 
     @Column(name = "del_yn")
     @Enumerated(EnumType.STRING)
