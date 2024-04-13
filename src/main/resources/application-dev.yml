@@ -32,3 +32,8 @@ logging:
 
 server:
   port: 8080
+
+firebase-config:
+  database-url: https://yh-erp.firebaseio.com
+  service-key-path: src/main/resources/serviceAccountKey.json
+  user-collection-name: user
