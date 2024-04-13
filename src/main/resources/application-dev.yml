@@ -1,0 +1,34 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/erp_db
+    username: erp_user
+    password: erp_qwe123!@#
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
+      hibernate:
+        format_sql: true
+logging:
+  level:
+    org:
+      springframework : INFO
+      hibernate:
+        sql: TRACE
+    com:
+      zaxxer:
+        hikari: INFO
+  file:
+    path: ./logs
+
+server:
+  port: 8080
