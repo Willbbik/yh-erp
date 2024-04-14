@@ -28,12 +28,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	implementation 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
