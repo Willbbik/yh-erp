@@ -35,7 +35,7 @@ public class Quotation {
     private String quoteDate; //TODO 날짜타입으로 할지 확인 필요
 
     @Column(name = "quotationType")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = QuotationType.StringTo.class)
     private QuotationType type;
 
     @Column(name = "quote_number")
@@ -60,7 +60,7 @@ public class Quotation {
     private LocalDateTime createAt;
 
     @Column(name = "del_yn")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
 }

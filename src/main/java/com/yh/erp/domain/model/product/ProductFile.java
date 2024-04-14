@@ -38,7 +38,7 @@ public class ProductFile {
     private Integer sort;
 
     @Column(name = "del_yn")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
 }

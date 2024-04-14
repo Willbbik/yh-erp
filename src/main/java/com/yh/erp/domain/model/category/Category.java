@@ -29,7 +29,7 @@ public class Category {
     private Long desc;
 
     @Column(name = "del_yn")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
 }

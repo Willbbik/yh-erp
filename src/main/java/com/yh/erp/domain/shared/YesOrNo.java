@@ -1,5 +1,6 @@
 package com.yh.erp.domain.shared;
 
+import com.yh.erp.domain.service.EnumTypeConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,5 +13,7 @@ public enum YesOrNo implements EnumCode{
 
     private final String code;
     private final String name;
+
+    public static class StringTo extends EnumTypeConverter<YesOrNo> {};
 
 }
