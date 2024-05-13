@@ -4,7 +4,7 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/erp_db
+    url: jdbc:mysql://118.36.206.174:3306/erp_db
     username: erp_user
     password: erp_qwe123!@#
   jpa:
