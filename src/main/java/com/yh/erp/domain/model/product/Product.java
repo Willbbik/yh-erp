@@ -2,6 +2,7 @@ package com.yh.erp.domain.model.product;
 
 import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,10 +21,10 @@ public class Product {
     private Long identifyNumber;
 
     @Column(name = "product_name")
-    private String productName;
+    private String name;
 
     @Column(name = "product_size")
-    private String productSize;
+    private String size;
 
     @Column(name = "price")
     private Long price;
@@ -35,4 +36,13 @@ public class Product {
     @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
+    @Builder
+    public Product(Long identifyNumber, String name, String size, Long price, String mainImageFullPath) {
+        this.identifyNumber = identifyNumber;
+        this.name = name;
+        this.size = size;
+        this.price = price;
+        this.mainImageFullPath = mainImageFullPath;
+        this.delYn = YesOrNo.NO;
+    }
 }

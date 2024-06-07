@@ -1,19 +1,19 @@
-2024-05-27T00:09:54.219+09:00  INFO 49191 --- [main] com.yh.erp.ErpApplication                : Starting ErpApplication using Java 17.0.5 with PID 49191 (/Users/min/Documents/toyProject/yh-erp/out/production/classes started by min in /Users/min/Documents/toyProject/yh-erp)
-2024-05-27T00:09:54.226+09:00  INFO 49191 --- [main] com.yh.erp.ErpApplication                : The following 1 profile is active: "local"
-2024-05-27T00:09:54.584+09:00  INFO 49191 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-05-27T00:09:54.622+09:00  INFO 49191 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 33 ms. Found 3 JPA repository interfaces.
-2024-05-27T00:09:54.898+09:00  INFO 49191 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2024-05-27T00:09:54.904+09:00  INFO 49191 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-05-27T00:09:54.904+09:00  INFO 49191 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
-2024-05-27T00:09:54.931+09:00  INFO 49191 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-05-27T00:09:54.932+09:00  INFO 49191 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 681 ms
-2024-05-27T00:09:55.011+09:00  INFO 49191 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-05-27T00:09:55.042+09:00  INFO 49191 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
-2024-05-27T00:09:55.058+09:00  INFO 49191 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-05-27T00:09:55.214+09:00  INFO 49191 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-05-27T00:09:55.229+09:00  INFO 49191 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-05-27T00:09:55.231+09:00  WARN 49191 --- [main] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
-2024-05-27T00:10:26.281+09:00 ERROR 49191 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+2024-06-08T00:05:03.849+09:00  INFO 65240 --- [main] com.yh.erp.ErpApplication                : Starting ErpApplication using Java 17.0.5 with PID 65240 (/Users/min/Documents/toyProject/yh-erp/out/production/classes started by min in /Users/min/Documents/toyProject/yh-erp)
+2024-06-08T00:05:03.855+09:00  INFO 65240 --- [main] com.yh.erp.ErpApplication                : The following 1 profile is active: "local"
+2024-06-08T00:05:04.183+09:00  INFO 65240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-08T00:05:04.218+09:00  INFO 65240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 3 JPA repository interfaces.
+2024-06-08T00:05:04.478+09:00  INFO 65240 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-08T00:05:04.485+09:00  INFO 65240 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-08T00:05:04.485+09:00  INFO 65240 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-06-08T00:05:04.513+09:00  INFO 65240 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-08T00:05:04.514+09:00  INFO 65240 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 639 ms
+2024-06-08T00:05:04.593+09:00  INFO 65240 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-08T00:05:04.622+09:00  INFO 65240 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-06-08T00:05:04.640+09:00  INFO 65240 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-08T00:05:04.769+09:00  INFO 65240 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-08T00:05:04.787+09:00  INFO 65240 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-08T00:05:04.790+09:00  WARN 65240 --- [main] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2024-06-08T00:05:35.848+09:00 ERROR 65240 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
 
 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
@@ -96,7 +96,7 @@ Caused by: java.net.SocketTimeoutException: Connect timed out
 	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62) ~[mysql-connector-j-8.3.0.jar:8.3.0]
 	... 52 common frames omitted
 
-2024-05-27T00:10:26.287+09:00  WARN 49191 --- [main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+2024-06-08T00:05:35.859+09:00  WARN 65240 --- [main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
 
 java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
 	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
@@ -137,13 +137,13 @@ java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.Sql
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) ~[spring-boot-3.2.4.jar:3.2.4]
 	at com.yh.erp.ErpApplication.main(ErpApplication.java:15) ~[classes/:na]
 
-2024-05-27T00:10:26.287+09:00 ERROR 49191 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-2024-05-27T00:10:26.288+09:00  WARN 49191 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-2024-05-27T00:10:26.290+09:00  INFO 49191 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2024-05-27T00:10:26.299+09:00  INFO 49191 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+2024-06-08T00:05:35.860+09:00 ERROR 65240 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2024-06-08T00:05:35.862+09:00  WARN 65240 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2024-06-08T00:05:35.866+09:00  INFO 65240 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-08T00:05:35.880+09:00  INFO 65240 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2024-05-27T00:10:26.309+09:00 ERROR 49191 --- [main] o.s.boot.SpringApplication               : Application run failed
+2024-06-08T00:05:35.895+09:00 ERROR 65240 --- [main] o.s.boot.SpringApplication               : Application run failed
 
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-6.1.5.jar:6.1.5]
@@ -192,3 +192,25 @@ Caused by: org.hibernate.HibernateException: Unable to determine Dialect without
 	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
 	... 31 common frames omitted
 
+2024-06-08T00:09:29.648+09:00  INFO 66102 --- [main] com.yh.erp.ErpApplication                : Starting ErpApplication using Java 17.0.5 with PID 66102 (/Users/min/Documents/toyProject/yh-erp/out/production/classes started by min in /Users/min/Documents/toyProject/yh-erp)
+2024-06-08T00:09:29.649+09:00  INFO 66102 --- [main] com.yh.erp.ErpApplication                : The following 1 profile is active: "local"
+2024-06-08T00:09:29.963+09:00  INFO 66102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-08T00:09:29.996+09:00  INFO 66102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 29 ms. Found 3 JPA repository interfaces.
+2024-06-08T00:09:30.249+09:00  INFO 66102 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-08T00:09:30.255+09:00  INFO 66102 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-08T00:09:30.255+09:00  INFO 66102 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-06-08T00:09:30.283+09:00  INFO 66102 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-08T00:09:30.283+09:00  INFO 66102 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 615 ms
+2024-06-08T00:09:30.358+09:00  INFO 66102 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-08T00:09:30.385+09:00  INFO 66102 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-06-08T00:09:30.399+09:00  INFO 66102 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-08T00:09:30.528+09:00  INFO 66102 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-08T00:09:30.546+09:00  INFO 66102 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-08T00:09:30.548+09:00  WARN 66102 --- [main] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2024-06-08T00:09:30.778+09:00  INFO 66102 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@391d28ea
+2024-06-08T00:09:30.779+09:00  INFO 66102 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-08T00:09:31.252+09:00  INFO 66102 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-08T00:09:31.254+09:00  INFO 66102 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-08T00:09:31.598+09:00  INFO 66102 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37289e90, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@f461c9c, org.springframework.security.web.context.SecurityContextHolderFilter@38224635, org.springframework.security.web.header.HeaderWriterFilter@2a3c3a04, org.springframework.web.filter.CorsFilter@40477d52, org.springframework.security.web.authentication.logout.LogoutFilter@60c33609, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@70a3b, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@19ce597a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2a1be9f8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ff12345, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e445ffe, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59b43e35, org.springframework.security.web.access.ExceptionTranslationFilter@628b9af5, org.springframework.security.web.access.intercept.AuthorizationFilter@121f97fb]
+2024-06-08T00:09:31.717+09:00  INFO 66102 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-06-08T00:09:31.722+09:00  INFO 66102 --- [main] com.yh.erp.ErpApplication                : Started ErpApplication in 2.293 seconds (process running for 2.661)
