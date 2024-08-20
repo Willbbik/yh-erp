@@ -33,6 +33,10 @@ logging:
 server:
   port: 8080
 
+#파일 업로드 경로
+file:
+  upload_path: /Users/1234/Documents/yh-erp/file
+
 firebase-config:
   database-url: https://yh-erp.firebaseio.com
   service-key-path: src/main/resources/serviceAccountKey.json
