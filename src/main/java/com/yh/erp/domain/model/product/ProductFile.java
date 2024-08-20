@@ -2,19 +2,26 @@ package com.yh.erp.domain.model.product;
 
 import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "TB_PRODUCT_FILE")
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductFile {
 
     @Id
     @Column(name = "product_file_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "file_name")
     private String fileName;
@@ -23,7 +30,7 @@ public class ProductFile {
     private String fileOriginName;
 
     @Column(name = "file_size")
-    private Integer fileSize;
+    private Long fileSize;
 
     @Column(name = "file_extension")
     private String fileExt;

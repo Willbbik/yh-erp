@@ -23,6 +23,9 @@ public class Product {
     @Column(name = "product_name")
     private String name;
 
+    @Column(name = "model_name")
+    private String modelName;
+
     @Column(name = "product_size")
     private String size;
 
@@ -37,9 +40,10 @@ public class Product {
     private YesOrNo delYn;
 
     @Builder
-    public Product(Long identifyNumber, String name, String size, Long price, String mainImageFullPath) {
+    public Product(Long identifyNumber, String name, String modelName, String size, Long price, String mainImageFullPath) {
         this.identifyNumber = identifyNumber;
         this.name = name;
+        this.modelName = modelName;
         this.size = size;
         this.price = price;
         this.mainImageFullPath = mainImageFullPath;
