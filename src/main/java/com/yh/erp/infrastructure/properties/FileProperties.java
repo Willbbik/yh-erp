@@ -1,12 +1,12 @@
 package com.yh.erp.infrastructure.properties;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "file-config")
-@AllArgsConstructor
-@Getter
+@Validated
+@Data
 public class FileProperties {
     private String uploadPath;
 }

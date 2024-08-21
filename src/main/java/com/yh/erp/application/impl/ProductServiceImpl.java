@@ -1,6 +1,7 @@
 package com.yh.erp.application.impl;
 
 import com.yh.erp.application.ProductService;
+import com.yh.erp.common.FileUploader;
 import com.yh.erp.domain.model.product.Product;
 import com.yh.erp.domain.model.product.ProductRepository;
 import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+
+    private final FileUploader fileUploader;
 
     @Override
     @Transactional

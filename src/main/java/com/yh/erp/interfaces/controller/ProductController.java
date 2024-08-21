@@ -23,13 +23,13 @@ public class ProductController {
         log.info("/products api를 호출합니다.");
 
         dto.setMainImage(request.getFile("mainImage"));
-        dto.setImage1(request.getFile("image1"));
-        dto.setImage2(request.getFile("image2"));
-        dto.setImage3(request.getFile("image3"));
-        dto.setImage4(request.getFile("image4"));
+        dto.setImage1(request.getFile("file1"));
+        dto.setImage2(request.getFile("file2"));
+        dto.setImage3(request.getFile("file3"));
+        dto.setImage4(request.getFile("file4"));
         ProductDTO productDTO = productService.createProduct(dto);
 
-        return ResponseEntity.ok().body(productDTO);
+        return ResponseEntity.ok().body(null);
     }
 
 }

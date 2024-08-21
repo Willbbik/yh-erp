@@ -5,7 +5,7 @@ import com.yh.erp.domain.model.product.ProductFileRepository;
 import com.yh.erp.domain.shared.YesOrNo;
 import com.yh.erp.infrastructure.properties.FileProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class FileUploader {
 
@@ -44,7 +44,7 @@ public class FileUploader {
         File newFile = this.createFile(file, fileFullPath);
 
         //파일 sort 조회
-        Integer fileLength = productFileRepository.getLastSort(productId);
+        Integer fileLength = productFileRepository.findLastSort(productId);
 
         //파일 정보 리턴
         ProductFile productFile = ProductFile.builder()

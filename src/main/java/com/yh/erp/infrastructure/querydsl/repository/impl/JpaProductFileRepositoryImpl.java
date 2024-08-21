@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JpaProductFIleRepositoryImpl implements JpaProductFileRepository {
+public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
 
     @Autowired
     private JPAQueryFactory jqf;
@@ -16,10 +16,10 @@ public class JpaProductFIleRepositoryImpl implements JpaProductFileRepository {
 
 
     @Override
-    public Integer getLastSort(Long productId) {
+    public Integer findLastSort(Long productId) {
         return jqf.select(productFile.sort.max())
                 .from(productFile)
-                .where(productFile.id.eq(productId))
-                .fetchFirst().intValue();
+                .where(productFile.productId.eq(productId))
+                .fetchFirst();
     }
 }
