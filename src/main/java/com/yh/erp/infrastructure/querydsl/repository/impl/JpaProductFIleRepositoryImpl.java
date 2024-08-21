@@ -17,7 +17,7 @@ public class JpaProductFIleRepositoryImpl implements JpaProductFileRepository {
 
     @Override
     public Integer getLastSort(Long productId) {
-        return jqf.select(productFile.count())
+        return jqf.select(productFile.sort.max())
                 .from(productFile)
                 .where(productFile.id.eq(productId))
                 .fetchFirst().intValue();
