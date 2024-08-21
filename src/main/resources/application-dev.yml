@@ -34,7 +34,7 @@ server:
   port: 8080
 
 #파일 업로드 경로
-file:
+file-config:
   upload_path: /Users/1234/Documents/yh-erp/file
 
 firebase-config:
