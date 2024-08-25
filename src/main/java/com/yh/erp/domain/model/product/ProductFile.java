@@ -48,4 +48,8 @@ public class ProductFile {
     @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
+    @Column(name = "main_file_yn")
+    @Convert(converter = YesOrNo.StringTo.class)
+    private YesOrNo mainFileYn;
+
 }

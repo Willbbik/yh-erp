@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,6 +31,14 @@ public class FileUploader {
     @Transactional
     public ProductFile uploadProductImage(MultipartFile file, Long productId, String directory) throws Exception {
 
+        if(file == null) {
+            return null;
+        }
+
+        if(!directory.contains("/")){
+            directory = "/"+directory;
+        }
+
         String fileNameNoExt = removeExtension(file.getOriginalFilename());
         String originalFilename = file.getOriginalFilename();
         String extension = StringUtils.getFilenameExtension(originalFilename);
@@ -44,7 +53,7 @@ public class FileUploader {
         File newFile = this.createFile(file, fileFullPath);
 
         //파일 sort 조회
-        Integer fileLength = productFileRepository.findLastSort(productId);
+        Integer lastSort = productFileRepository.findLastSort(productId);
 
         //파일 정보 리턴
         ProductFile productFile = ProductFile.builder()
@@ -56,7 +65,7 @@ public class FileUploader {
                 .filePath(path)
                 .fileSize(newFile.length())
                 .delYn(YesOrNo.NO)
-                .sort(fileLength++)
+                .sort(lastSort)
                 .build();
 
         //파일 정보 db 저장

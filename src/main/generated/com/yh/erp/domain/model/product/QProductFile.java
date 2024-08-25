@@ -31,9 +31,13 @@ public class QProductFile extends EntityPathBase<ProductFile> {
 
     public final StringPath filePath = createString("filePath");
 
-    public final NumberPath<Integer> fileSize = createNumber("fileSize", Integer.class);
+    public final NumberPath<Long> fileSize = createNumber("fileSize", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final EnumPath<com.yh.erp.domain.shared.YesOrNo> mainFileYn = createEnum("mainFileYn", com.yh.erp.domain.shared.YesOrNo.class);
+
+    public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
     public final NumberPath<Integer> sort = createNumber("sort", Integer.class);
 

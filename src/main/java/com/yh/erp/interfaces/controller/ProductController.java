@@ -9,7 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,17 +23,19 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto, MultipartHttpServletRequest request) {
+    public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto, MultipartHttpServletRequest request) throws Exception {
         log.info("/products api를 호출합니다.");
 
-        dto.setMainImage(request.getFile("mainImage"));
-        dto.setImage1(request.getFile("file1"));
-        dto.setImage2(request.getFile("file2"));
-        dto.setImage3(request.getFile("file3"));
-        dto.setImage4(request.getFile("file4"));
-        ProductDTO productDTO = productService.createProduct(dto);
+        List<MultipartFile> images = new ArrayList<>();
+        images.add(request.getFile("file1"));
+        images.add(request.getFile("file2"));
+        images.add(request.getFile("file3"));
+        images.add(request.getFile("file4"));
 
-        return ResponseEntity.ok().body(null);
+        dto.setMainImage(request.getFile("mainImage"));
+        dto.setImages(images);
+
+        return ResponseEntity.ok().body(productService.createProduct(dto));
     }
 
 }

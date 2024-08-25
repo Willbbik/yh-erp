@@ -17,8 +17,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "identify_number")
-    private Long identifyNumber;
+    @Column(name = "g2b_number")
+    private Long g2bNumber;
 
     @Column(name = "product_name")
     private String name;
@@ -40,13 +40,17 @@ public class Product {
     private YesOrNo delYn;
 
     @Builder
-    public Product(Long identifyNumber, String name, String modelName, String size, Long price, String mainImageFullPath) {
-        this.identifyNumber = identifyNumber;
+    public Product(Long g2bNumber, String name, String modelName, String size, Long price) {
+        this.g2bNumber = g2bNumber;
         this.name = name;
         this.modelName = modelName;
         this.size = size;
         this.price = price;
-        this.mainImageFullPath = mainImageFullPath;
         this.delYn = YesOrNo.NO;
     }
+
+    public void updateMainImageFullPath(String fullPath) {
+        this.mainImageFullPath = fullPath;
+    }
+
 }

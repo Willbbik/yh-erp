@@ -21,11 +21,13 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final EnumPath<com.yh.erp.domain.shared.YesOrNo> delYn = createEnum("delYn", com.yh.erp.domain.shared.YesOrNo.class);
 
+    public final NumberPath<Long> g2bNumber = createNumber("g2bNumber", Long.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> identifyNumber = createNumber("identifyNumber", Long.class);
-
     public final StringPath mainImageFullPath = createString("mainImageFullPath");
+
+    public final StringPath modelName = createString("modelName");
 
     public final StringPath name = createString("name");
 
