@@ -28,20 +28,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDTO createProduct(ProductCreateDTO dto) throws Exception {
 
-        /**
-         *
-         * 이미지 삭제
-         * 새로 등록 할 메인이미지 있으면 db에 존재여부 확인 후 저장
-         *
-         * 상품 등록
-         *
-         * 등록 할 이미지랑 등록된 이미지 개수 확인
-         * 이미지 저장
-         *
-         *
-         *
-         */
-
+        //물품 등록
         Product product = Product.builder()
             .name(dto.getName())
             .modelName(dto.getModelName())
@@ -52,22 +39,22 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        List<ProductFile> uploadedImages = new ArrayList<>();
+        Integer sort = 1;
 
-        ProductFile mainImageInfo = null;
         //메인 이미지 저장
+        ProductFile mainImageInfo = null;
         if(dto.getMainImage() != null){
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), "temp");
-            uploadedImages.add(mainImageInfo);
+            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), "temp2", sort);
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
+            sort++;
         }
 
-        List<ProductFile> imageInfos = new ArrayList<>();
         //기타 이미지들 저장
+        List<ProductFile> imageInfos = new ArrayList<>();
         for(MultipartFile image : dto.getImages()) {
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), "temp");
-            uploadedImages.add(productFile);
+            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), "temp2", sort);
             imageInfos.add(productFile);
+            sort++;
         }
 
         ModelMapper modelMapper = new ModelMapper();

@@ -29,7 +29,7 @@ public class FileUploader {
     private final ProductFileRepository productFileRepository;
 
     @Transactional
-    public ProductFile uploadProductImage(MultipartFile file, Long productId, String directory) throws Exception {
+    public ProductFile uploadProductImage(MultipartFile file, Long productId, String directory, Integer sort) throws Exception {
 
         if(file == null) {
             return null;
@@ -52,9 +52,6 @@ public class FileUploader {
         //파일 생성
         File newFile = this.createFile(file, fileFullPath);
 
-        //파일 sort 조회
-        Integer lastSort = productFileRepository.findLastSort(productId);
-
         //파일 정보 리턴
         ProductFile productFile = ProductFile.builder()
                 .productId(productId)
@@ -65,7 +62,8 @@ public class FileUploader {
                 .filePath(path)
                 .fileSize(newFile.length())
                 .delYn(YesOrNo.NO)
-                .sort(lastSort)
+                .mainFileYn(YesOrNo.NO)
+                .sort(sort)
                 .build();
 
         //파일 정보 db 저장
