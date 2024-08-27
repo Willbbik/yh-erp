@@ -22,6 +22,23 @@ public class JpaProductRepositoryImpl implements JpaProductRepository {
     private QProduct product = QProduct.product;
 
     @Override
+    public ProductDTO findProductById(Long id) {
+        return jqf.select(Projections.fields(ProductDTO.class,
+                        product.id,
+                        product.g2bNumber,
+                        product.name,
+                        product.modelName,
+                        product.size,
+                        product.price,
+                        product.mainImageFullPath
+                ))
+                .from(product)
+                .where(this.eqProductId(id),
+                        this.notDeleted())
+                .fetchOne();
+    }
+
+    @Override
     public List<ProductDTO> findProducts(ProductSearchReqDTO dto) {
         return jqf.select(Projections.fields(ProductDTO.class,
                     product.id,
@@ -41,6 +58,10 @@ public class JpaProductRepositoryImpl implements JpaProductRepository {
                     this.betweenPrice(dto.getMinPrice(), dto.getMaxPrice()))
             .orderBy(product.id.desc())
             .fetch();
+    }
+
+    public BooleanExpression eqProductId(Long id) {
+        return id != null ? product.id.eq(id) : null;
     }
 
     public BooleanExpression containsG2bNumber(Long g2bNumber) {

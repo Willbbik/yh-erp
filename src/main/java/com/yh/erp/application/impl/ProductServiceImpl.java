@@ -4,9 +4,11 @@ import com.yh.erp.application.ProductService;
 import com.yh.erp.common.FileUploader;
 import com.yh.erp.domain.model.product.Product;
 import com.yh.erp.domain.model.product.ProductFile;
+import com.yh.erp.domain.model.product.ProductFileRepository;
 import com.yh.erp.domain.model.product.ProductRepository;
 import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
 import com.yh.erp.domain.model.product.dto.ProductDTO;
+import com.yh.erp.domain.model.product.dto.ProductFileDTO;
 import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +26,23 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ProductFileRepository productFileRepository;
+
     private final FileUploader fileUploader;
 
     @Override
     public List<ProductDTO> getProducts(ProductSearchReqDTO dto) {
         return productRepository.findProducts(dto);
+    }
+
+
+    @Override
+    public ProductDTO getProduct(Long id) {
+        ProductDTO productDTO = productRepository.findProductById(id);
+        productDTO.setMainImageInfo(productFileRepository.findMainImageById(id));
+        productDTO.setImageInfos(productFileRepository.findImagesById(id));
+
+        return productDTO;
     }
 
     @Override
@@ -52,6 +67,7 @@ public class ProductServiceImpl implements ProductService {
         if(dto.getMainImage() != null){
             //TODO 추후 directroy 어떻게 할지 생각 필요
             mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, sort);
+            mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
             sort++;
         }

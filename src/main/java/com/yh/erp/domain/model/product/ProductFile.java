@@ -52,4 +52,8 @@ public class ProductFile {
     @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo mainFileYn;
 
+    public void isMainFile(){
+        this.mainFileYn = YesOrNo.YES;
+    }
+
 }

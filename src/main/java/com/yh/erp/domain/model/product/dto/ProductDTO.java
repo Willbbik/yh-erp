@@ -1,14 +1,10 @@
 package com.yh.erp.domain.model.product.dto;
 
 import com.yh.erp.domain.model.product.ProductFile;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class ProductDTO {
 

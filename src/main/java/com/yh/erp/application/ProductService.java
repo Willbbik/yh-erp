@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ProductService {
 
+    ProductDTO getProduct(Long id);
+
     List<ProductDTO> getProducts(ProductSearchReqDTO dto);
 
     ProductDTO createProduct(ProductCreateDTO dto) throws Exception;

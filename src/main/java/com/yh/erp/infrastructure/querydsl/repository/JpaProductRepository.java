@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface JpaProductRepository {
 
+    ProductDTO findProductById(Long id);
+
     List<ProductDTO> findProducts(ProductSearchReqDTO dto);
 
 }
