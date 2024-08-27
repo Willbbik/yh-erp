@@ -35,6 +35,10 @@ public class FileUploader {
             return null;
         }
 
+        if(StringUtils.isEmpty(directory)){
+            directory = "/";
+        }
+
         if(!directory.contains("/")){
             directory = "/"+directory;
         }

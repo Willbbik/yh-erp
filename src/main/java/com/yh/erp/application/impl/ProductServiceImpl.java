@@ -44,7 +44,8 @@ public class ProductServiceImpl implements ProductService {
         //메인 이미지 저장
         ProductFile mainImageInfo = null;
         if(dto.getMainImage() != null){
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), "temp2", sort);
+            //TODO 추후 directroy 어떻게 할지 생각 필요
+            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, sort);
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
             sort++;
         }
@@ -52,7 +53,8 @@ public class ProductServiceImpl implements ProductService {
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
         for(MultipartFile image : dto.getImages()) {
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), "temp2", sort);
+            //TODO 추후 directroy 어떻게 할지 생각 필요
+            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, sort);
             imageInfos.add(productFile);
             sort++;
         }
