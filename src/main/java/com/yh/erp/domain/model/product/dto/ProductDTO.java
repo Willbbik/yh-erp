@@ -1,20 +1,24 @@
 package com.yh.erp.domain.model.product.dto;
 
 import com.yh.erp.domain.model.product.ProductFile;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ProductDTO {
 
     private Long id;
-    private Long identifyNumber;
+    private Long g2bNumber;
     private String name;
+    private String modelName;
     private String size;
-    private String price;
+    private Long price;
     private String mainImageFullPath;
-
     private ProductFile mainImageInfo;
     private List<ProductFile> imageInfos;
 }

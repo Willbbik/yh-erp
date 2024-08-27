@@ -7,6 +7,7 @@ import com.yh.erp.domain.model.product.ProductFile;
 import com.yh.erp.domain.model.product.ProductRepository;
 import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
 import com.yh.erp.domain.model.product.dto.ProductDTO;
+import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     private final FileUploader fileUploader;
+
+    @Override
+    public List<ProductDTO> getProducts(ProductSearchReqDTO dto) {
+        return productRepository.findProducts(dto);
+    }
 
     @Override
     @Transactional
