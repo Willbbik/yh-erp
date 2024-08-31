@@ -3,12 +3,15 @@ package com.yh.erp.domain.model.product;
 import com.yh.erp.domain.shared.YesOrNo;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "TB_PRODUCT")
-@Getter
+@Data
 @NoArgsConstructor
 public class Product {
 
@@ -39,6 +42,12 @@ public class Product {
     @Convert(converter = YesOrNo.StringTo.class)
     private YesOrNo delYn;
 
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+
+    @Column(name = "mod_at")
+    private LocalDateTime modAt;
+
     @Builder
     public Product(Long g2bNumber, String name, String modelName, String size, Long price) {
         this.g2bNumber = g2bNumber;
@@ -47,6 +56,7 @@ public class Product {
         this.size = size;
         this.price = price;
         this.delYn = YesOrNo.NO;
+        this.createAt = LocalDateTime.now();
     }
 
     public void updateMainImageFullPath(String fullPath) {
