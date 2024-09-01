@@ -11,4 +11,6 @@ public interface JpaProductRepository {
 
     List<ProductDTO> findProducts(ProductSearchReqDTO dto);
 
+    void removeProductById(Long id);
+
 }

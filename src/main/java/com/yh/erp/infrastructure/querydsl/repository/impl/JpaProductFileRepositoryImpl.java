@@ -52,7 +52,7 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
     }
 
     @Override
-    public void delFileById(Long id) {
+    public void removeFileById(Long id) {
         jqf.update(productFile)
             .set(productFile.delYn, YesOrNo.YES)
             .where(productFile.id.eq(id))
@@ -60,11 +60,19 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
     }
 
     @Override
-    public void delFilesByIds(Long productId, List<Long> ids) {
+    public void removeFilesByIds(Long productId, List<Long> ids) {
         jqf.update(productFile)
                 .set(productFile.delYn, YesOrNo.YES)
                 .where(this.eqProductId(productId),
                         productFile.id.in(ids))
+                .execute();
+    }
+
+    @Override
+    public void removeAllFilesByProductId(Long productId) {
+        jqf.update(productFile)
+                .set(productFile.delYn, YesOrNo.YES)
+                .where(productFile.productId.eq(productId))
                 .execute();
     }
 

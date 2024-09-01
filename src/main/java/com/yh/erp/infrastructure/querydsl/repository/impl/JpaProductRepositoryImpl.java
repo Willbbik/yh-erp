@@ -60,6 +60,14 @@ public class JpaProductRepositoryImpl implements JpaProductRepository {
             .fetch();
     }
 
+    @Override
+    public void removeProductById(Long id) {
+        jqf.update(product)
+                .set(product.delYn, YesOrNo.YES)
+                .where(this.eqProductId(id))
+                .execute();
+    }
+
     public BooleanExpression eqProductId(Long id) {
         return id != null ? product.id.eq(id) : null;
     }

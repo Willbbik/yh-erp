@@ -11,8 +11,10 @@ public interface JpaProductFileRepository {
 
     List<ProductFile> findImagesById(Long productId);
 
-    void delFileById(Long id);
+    void removeFileById(Long id);
 
-    void delFilesByIds(Long productId, List<Long> ids);
+    void removeFilesByIds(Long productId, List<Long> ids);
+
+    void removeAllFilesByProductId(Long productId);
 
 }

@@ -107,11 +107,14 @@ public class ProductServiceImpl implements ProductService {
         ProductFile originMainImage = productFileRepository.findMainImageById(id);
         if(YesOrNo.isYes(dto.getMainImageDelYn())){
             product.setMainImageFullPath(null);
-            originMainImage.delete();
+
+            if(originMainImage != null) {
+                originMainImage.delete();
+            }
         }
 
         //이미지 삭제
-        productFileRepository.delFilesByIds(id, dto.getDelImageIds());
+        productFileRepository.removeFilesByIds(id, dto.getDelImageIds());
 
         //메인이미지 중복 업로드 체크
         if(YesOrNo.isNo(dto.getMainImageDelYn()) && dto.getMainImage() != null){
@@ -156,4 +159,12 @@ public class ProductServiceImpl implements ProductService {
 
         return productDTO;
     }
+
+    @Transactional
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.removeProductById(id);
+        productFileRepository.removeAllFilesByProductId(id);
+    }
+
 }
