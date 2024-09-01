@@ -5,15 +5,12 @@ import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
 import com.yh.erp.domain.model.product.dto.ProductDTO;
 import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
 import com.yh.erp.domain.model.product.dto.ProductUpdateDTO;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

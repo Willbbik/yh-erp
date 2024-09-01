@@ -10,6 +10,7 @@ import java.util.List;
 public class ProductDTO {
 
     private Long id;
+    private String category;
     private Long g2bNumber;
     private String name;
     private String modelName;

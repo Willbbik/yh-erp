@@ -52,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
         //물품 등록
         Product product = Product.builder()
+            .category(dto.getCategory())
             .name(dto.getName())
             .modelName(dto.getModelName())
             .size(dto.getSize())
@@ -66,8 +67,7 @@ public class ProductServiceImpl implements ProductService {
         //메인 이미지 저장
         ProductFile mainImageInfo = null;
         if(dto.getMainImage() != null){
-            //TODO 추후 directroy 어떻게 할지 생각 필요
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, sort);
+            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), dto.getCategory(), sort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
             sort++;
@@ -79,13 +79,12 @@ public class ProductServiceImpl implements ProductService {
             if(image == null){
                 continue;
             }
-            //TODO 추후 directroy 어떻게 할지 생각 필요
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, sort);
+
+            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), sort);
             imageInfos.add(productFile);
             sort++;
         }
 
-//        ModelMapper modelMapper = new ModelMapper();
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setMainImageInfo(mainImageInfo);
         productDTO.setImageInfos(imageInfos);
@@ -128,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
         if(dto.getMainImage() != null){
             ++lastSort;
 
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, lastSort);
+            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), dto.getCategory(), lastSort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
         }
@@ -141,10 +140,11 @@ public class ProductServiceImpl implements ProductService {
             }
 
             ++lastSort;
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, lastSort);
+            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), lastSort);
             imageInfos.add(productFile);
         }
 
+        product.setCategory(dto.getCategory());
         product.setG2bNumber(dto.getG2bNumber());
         product.setName(dto.getName());
         product.setModelName(dto.getModelName());

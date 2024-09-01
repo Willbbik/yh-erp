@@ -20,6 +20,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "g2b_number")
     private Long g2bNumber;
 
@@ -49,8 +52,9 @@ public class Product {
     private LocalDateTime modAt;
 
     @Builder
-    public Product(Long g2bNumber, String name, String modelName, String size, Long price) {
+    public Product(Long g2bNumber, String category, String name, String modelName, String size, Long price) {
         this.g2bNumber = g2bNumber;
+        this.category = category;
         this.name = name;
         this.modelName = modelName;
         this.size = size;

@@ -10,6 +10,7 @@ import java.util.List;
 public class ProductUpdateDTO {
 
     private Long g2bNumber;
+    private String category;
     private String name;
     private String modelName;
     private String size;
