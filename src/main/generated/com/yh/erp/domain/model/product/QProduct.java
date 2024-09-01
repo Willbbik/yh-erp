@@ -19,6 +19,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
+    public final DateTimePath<java.time.LocalDateTime> createAt = createDateTime("createAt", java.time.LocalDateTime.class);
+
     public final EnumPath<com.yh.erp.domain.shared.YesOrNo> delYn = createEnum("delYn", com.yh.erp.domain.shared.YesOrNo.class);
 
     public final NumberPath<Long> g2bNumber = createNumber("g2bNumber", Long.class);
@@ -26,6 +28,8 @@ public class QProduct extends EntityPathBase<Product> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath mainImageFullPath = createString("mainImageFullPath");
+
+    public final DateTimePath<java.time.LocalDateTime> modAt = createDateTime("modAt", java.time.LocalDateTime.class);
 
     public final StringPath modelName = createString("modelName");
 

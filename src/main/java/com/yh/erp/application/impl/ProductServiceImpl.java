@@ -104,9 +104,8 @@ public class ProductServiceImpl implements ProductService {
         //TODO 물리파일 삭제는 추후 스케줄러를 통해서 할 예정
 
         //메인 이미지 삭제
-        if(dto.getMainImageDelYn()){
-
-
+        if(YesOrNo.YES.getCode().equals(dto.getMainImageDelYn())){
+            product.setMainImageFullPath(null);
         }
 
         //이미지 삭제
@@ -114,6 +113,31 @@ public class ProductServiceImpl implements ProductService {
             productFileRepository.delFileById(delImageId);
         }
 
+        Integer lastSort = productFileRepository.findLastSort(id);
+
+        //파일 업로드
+        ProductFile mainImageInfo = null;
+        if(dto.getMainImage() != null){
+            //TODO 추후 directroy 어떻게 할지 생각 필요
+            ++lastSort;
+
+            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, lastSort);
+            mainImageInfo.isMainFile();
+            product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
+        }
+
+        //기타 이미지들 저장
+        List<ProductFile> imageInfos = new ArrayList<>();
+        for(MultipartFile image : dto.getImages()) {
+            if(image == null){
+                continue;
+            }
+
+            //TODO 추후 directroy 어떻게 할지 생각 필요
+            ++lastSort;
+            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, lastSort);
+            imageInfos.add(productFile);
+        }
 
         product.setG2bNumber(dto.getG2bNumber());
         product.setName(dto.getName());
@@ -122,7 +146,12 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(dto.getPrice());
         product.setModAt(LocalDateTime.now());
 
+        ModelMapper modelMapper = new ModelMapper();
+        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+        productDTO.setMainImageInfo(mainImageInfo);
+        productDTO.setImageInfos(imageInfos);
+        //기존 이미지랑 합쳐서 리턴 해줘야할 듯
 
-        return null;
+        return productDTO;
     }
 }

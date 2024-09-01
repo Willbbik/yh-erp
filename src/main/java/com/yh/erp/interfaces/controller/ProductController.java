@@ -4,6 +4,7 @@ import com.yh.erp.application.ProductService;
 import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
 import com.yh.erp.domain.model.product.dto.ProductDTO;
 import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
+import com.yh.erp.domain.model.product.dto.ProductUpdateDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,31 +36,25 @@ public class ProductController {
     @PostMapping("/products")
     public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto, MultipartHttpServletRequest request) throws Exception {
 
-        List<MultipartFile> images = new ArrayList<>();
-        images.add(request.getFile("file1"));
-        images.add(request.getFile("file2"));
-        images.add(request.getFile("file3"));
-        images.add(request.getFile("file4"));
-
+        dto.getImages().add(request.getFile("file1"));
+        dto.getImages().add(request.getFile("file2"));
+        dto.getImages().add(request.getFile("file3"));
+        dto.getImages().add(request.getFile("file4"));
         dto.setMainImage(request.getFile("mainImage"));
-        dto.setImages(images);
 
         return ResponseEntity.ok().body(productService.createProduct(dto));
     }
 
     @PutMapping("/products/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, ProductCreateDTO dto, MultipartHttpServletRequest request) throws Exception {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, ProductUpdateDTO dto, MultipartHttpServletRequest request) throws Exception {
 
-        List<MultipartFile> images = new ArrayList<>();
-        images.add(request.getFile("file1"));
-        images.add(request.getFile("file2"));
-        images.add(request.getFile("file3"));
-        images.add(request.getFile("file4"));
-
+        dto.getImages().add(request.getFile("file1"));
+        dto.getImages().add(request.getFile("file2"));
+        dto.getImages().add(request.getFile("file3"));
+        dto.getImages().add(request.getFile("file4"));
         dto.setMainImage(request.getFile("mainImage"));
-        dto.setImages(images);
 
-        return ResponseEntity.ok().body(productService.createProduct(dto));
+        return ResponseEntity.ok().body(productService.updateProduct(id, dto));
     }
 
 
