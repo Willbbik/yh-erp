@@ -14,6 +14,14 @@ public enum YesOrNo implements EnumCode{
     private final String code;
     private final String name;
 
+    public static boolean isYes(String value){
+        return YES.getCode().equals(value);
+    }
+
+    public static boolean isNo(String value){
+        return NO.getCode().equals(value);
+    }
+
     public static class StringTo extends EnumTypeConverter<YesOrNo> {};
 
 }

@@ -41,12 +41,12 @@ class FileUploaderTest {
         when(fileProperties.getUploadPath()).thenReturn("/Users/min/Documents/yh-erp/file");
 
         //when
-        ProductFile productFile = fileUploader.uploadProductImage(multipartFile2, 1L, "/a");
+        ProductFile productFile = fileUploader.uploadProductImage(multipartFile2, 1L, "/a", 1);
 
         //then
         Assertions.assertNotNull(productFile);
         Assertions.assertEquals(productFile.getFileName(), "test2.txt");
-        Assertions.assertEquals(productFile.getSort(), 2);
+        Assertions.assertEquals(productFile.getSort(), 1);
     }
 
 }

@@ -13,4 +13,6 @@ public interface JpaProductFileRepository {
 
     void delFileById(Long id);
 
+    void delFilesByIds(Long productId, List<Long> ids);
+
 }

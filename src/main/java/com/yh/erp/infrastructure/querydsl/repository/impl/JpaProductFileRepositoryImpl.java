@@ -59,6 +59,15 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
             .execute();
     }
 
+    @Override
+    public void delFilesByIds(Long productId, List<Long> ids) {
+        jqf.update(productFile)
+                .set(productFile.delYn, YesOrNo.YES)
+                .where(this.eqProductId(productId),
+                        productFile.id.in(ids))
+                .execute();
+    }
+
     public BooleanExpression eqProductId(Long productId) {
         return productId != null ? productFile.productId.eq(productId) : null;
     }

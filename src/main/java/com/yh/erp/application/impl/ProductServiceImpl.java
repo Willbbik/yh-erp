@@ -29,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final FileUploader fileUploader;
 
+    private static final ModelMapper modelMapper = new ModelMapper();
+
     @Override
     public List<ProductDTO> getProducts(ProductSearchReqDTO dto) {
         return productRepository.findProducts(dto);
@@ -74,13 +76,16 @@ public class ProductServiceImpl implements ProductService {
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
         for(MultipartFile image : dto.getImages()) {
+            if(image == null){
+                continue;
+            }
             //TODO 추후 directroy 어떻게 할지 생각 필요
             ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, sort);
             imageInfos.add(productFile);
             sort++;
         }
 
-        ModelMapper modelMapper = new ModelMapper();
+//        ModelMapper modelMapper = new ModelMapper();
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setMainImageInfo(mainImageInfo);
         productDTO.setImageInfos(imageInfos);
@@ -91,11 +96,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO updateProduct(Long id, ProductUpdateDTO dto) throws Exception {
 
-//        ProductDTO productDTO = productRepository.findById(id);
-//        if(productDTO == null){
-//            throw new RuntimeException("존제하지 않는 상품입니다.");
-//        }
-
         Product product = productRepository.findByIdAndDelYn(id, YesOrNo.NO);
         if(product == null){
             throw new RuntimeException("존재하지 않는 상품입니다.");
@@ -104,21 +104,25 @@ public class ProductServiceImpl implements ProductService {
         //TODO 물리파일 삭제는 추후 스케줄러를 통해서 할 예정
 
         //메인 이미지 삭제
-        if(YesOrNo.YES.getCode().equals(dto.getMainImageDelYn())){
+        ProductFile originMainImage = productFileRepository.findMainImageById(id);
+        if(YesOrNo.isYes(dto.getMainImageDelYn())){
             product.setMainImageFullPath(null);
+            originMainImage.delete();
         }
 
         //이미지 삭제
-        for(Long delImageId : dto.getDelImageIds()){
-            productFileRepository.delFileById(delImageId);
+        productFileRepository.delFilesByIds(id, dto.getDelImageIds());
+
+        //메인이미지 중복 업로드 체크
+        if(YesOrNo.isNo(dto.getMainImageDelYn()) && dto.getMainImage() != null){
+            throw new RuntimeException("메인 이미지가 이미 존재합니다. 삭제 후 재등록 해주세요.");
         }
 
         Integer lastSort = productFileRepository.findLastSort(id);
 
-        //파일 업로드
+        //메인 파일 업로드
         ProductFile mainImageInfo = null;
         if(dto.getMainImage() != null){
-            //TODO 추후 directroy 어떻게 할지 생각 필요
             ++lastSort;
 
             mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), null, lastSort);
@@ -133,7 +137,6 @@ public class ProductServiceImpl implements ProductService {
                 continue;
             }
 
-            //TODO 추후 directroy 어떻게 할지 생각 필요
             ++lastSort;
             ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), null, lastSort);
             imageInfos.add(productFile);
@@ -146,11 +149,10 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(dto.getPrice());
         product.setModAt(LocalDateTime.now());
 
-        ModelMapper modelMapper = new ModelMapper();
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setMainImageInfo(mainImageInfo);
-        productDTO.setImageInfos(imageInfos);
-        //기존 이미지랑 합쳐서 리턴 해줘야할 듯
+        productDTO.getImageInfos().addAll(productFileRepository.findImagesById(id));
+        productDTO.getImageInfos().addAll(imageInfos);
 
         return productDTO;
     }

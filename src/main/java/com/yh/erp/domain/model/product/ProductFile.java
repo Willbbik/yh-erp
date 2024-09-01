@@ -56,4 +56,8 @@ public class ProductFile {
         this.mainFileYn = YesOrNo.YES;
     }
 
+    public void delete() {
+        this.delYn = YesOrNo.YES;
+    }
+
 }
