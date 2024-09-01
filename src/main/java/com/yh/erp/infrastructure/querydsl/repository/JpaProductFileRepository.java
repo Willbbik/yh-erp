@@ -17,4 +17,6 @@ public interface JpaProductFileRepository {
 
     void removeAllFilesByProductId(Long productId);
 
+    Integer countImagesByProductId(Long productId);
+
 }

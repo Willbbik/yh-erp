@@ -76,6 +76,17 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
                 .execute();
     }
 
+    @Override
+    public Integer countImagesByProductId(Long productId) {
+        return jqf.select(productFile.count())
+            .from(productFile)
+            .where(this.eqProductId(productId),
+                    this.notDeleted(),
+                    this.eqMainFileYn(YesOrNo.NO))
+            .fetchOne()
+            .intValue();
+    }
+
     public BooleanExpression eqProductId(Long productId) {
         return productId != null ? productFile.productId.eq(productId) : null;
     }

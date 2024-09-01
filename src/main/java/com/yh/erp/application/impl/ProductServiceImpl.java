@@ -28,8 +28,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductFileRepository productFileRepository;
 
     private final FileUploader fileUploader;
-
     private static final ModelMapper modelMapper = new ModelMapper();
+
+    private static final Integer ABLE_UPLOAD_IMAGE_LENGTH = 5;
 
     @Override
     public List<ProductDTO> getProducts(ProductSearchReqDTO dto) {
@@ -118,6 +119,12 @@ public class ProductServiceImpl implements ProductService {
         //메인이미지 중복 업로드 체크
         if(YesOrNo.isNo(dto.getMainImageDelYn()) && dto.getMainImage() != null){
             throw new RuntimeException("메인 이미지가 이미 존재합니다. 삭제 후 재등록 해주세요.");
+        }
+
+        //이미지 등록 가능 최대 개수 검사
+        Integer existsCont = productFileRepository.countImagesByProductId(id);
+        if(ABLE_UPLOAD_IMAGE_LENGTH > dto.getImages().size() + existsCont){
+            throw new RuntimeException("등록 가능한 이미지의 최대 개수를 초과했습니다.");
         }
 
         Integer lastSort = productFileRepository.findLastSort(id);

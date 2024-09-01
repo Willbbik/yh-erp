@@ -37,6 +37,7 @@ public class ProductController {
         dto.getImages().add(request.getFile("file2"));
         dto.getImages().add(request.getFile("file3"));
         dto.getImages().add(request.getFile("file4"));
+        dto.getImages().add(request.getFile("file5"));
         dto.setMainImage(request.getFile("mainImage"));
 
         return ResponseEntity.ok().body(productService.createProduct(dto));
@@ -49,6 +50,7 @@ public class ProductController {
         dto.getImages().add(request.getFile("file2"));
         dto.getImages().add(request.getFile("file3"));
         dto.getImages().add(request.getFile("file4"));
+        dto.getImages().add(request.getFile("file5"));
         dto.setMainImage(request.getFile("mainImage"));
 
         return ResponseEntity.ok().body(productService.updateProduct(id, dto));
