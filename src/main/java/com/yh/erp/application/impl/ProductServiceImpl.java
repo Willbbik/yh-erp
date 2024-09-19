@@ -126,7 +126,12 @@ public class ProductServiceImpl implements ProductService {
 
         //이미지 등록 가능 최대 개수 검사
         Integer existsCont = productFileRepository.countImagesByProductId(id);
-        if(ABLE_UPLOAD_IMAGE_LENGTH < dto.getImages().size() + existsCont){
+        long newImageCount = dto.getImages()
+                .stream()
+                .filter(image -> image != null && !image.isEmpty())
+                .count();
+
+        if(ABLE_UPLOAD_IMAGE_LENGTH < newImageCount + existsCont){
             throw new YhErpException("등록 가능한 이미지의 최대 개수를 초과했습니다.");
         }
 
@@ -134,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
 
         //메인 파일 업로드
         ProductFile mainImageInfo = null;
-        if(dto.getMainImage() != null){
+        if(dto.getMainImage() != null && !dto.getMainImage().isEmpty()){
             ++lastSort;
 
             mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), dto.getCategory(), lastSort);
@@ -163,7 +168,7 @@ public class ProductServiceImpl implements ProductService {
         product.setModAt(LocalDateTime.now());
 
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-        productDTO.setMainImageInfo(mainImageInfo);
+        productDTO.setMainImageInfo(productFileRepository.findMainImageById(id));
         productDTO.getImageInfos().addAll(productFileRepository.findImagesById(id));
         productDTO.getImageInfos().addAll(imageInfos);
 
