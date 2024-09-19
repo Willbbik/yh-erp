@@ -8,6 +8,7 @@ import com.yh.erp.domain.model.product.ProductFileRepository;
 import com.yh.erp.domain.model.product.ProductRepository;
 import com.yh.erp.domain.model.product.dto.*;
 import com.yh.erp.domain.shared.YesOrNo;
+import com.yh.erp.infrastructure.error.YhErpException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
         for(MultipartFile image : dto.getImages()) {
-            if(image == null){
+            if(image == null || image.isEmpty()){
                 continue;
             }
 
@@ -98,13 +99,13 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findByIdAndDelYn(id, YesOrNo.NO);
         if(product == null){
-            throw new RuntimeException("존재하지 않는 상품입니다.");
+            throw new YhErpException("존재하지 않는 상품입니다.");
         }
 
         //TODO 물리파일 삭제는 추후 스케줄러를 통해서 할 예정
 
-        //메인 이미지 삭제
         ProductFile originMainImage = productFileRepository.findMainImageById(id);
+        //메인 이미지 삭제
         if(YesOrNo.isYes(dto.getMainImageDelYn())){
             product.setMainImageFullPath(null);
 
@@ -117,14 +118,16 @@ public class ProductServiceImpl implements ProductService {
         productFileRepository.removeFilesByIds(id, dto.getDelImageIds());
 
         //메인이미지 중복 업로드 체크
-        if(YesOrNo.isNo(dto.getMainImageDelYn()) && dto.getMainImage() != null){
-            throw new RuntimeException("메인 이미지가 이미 존재합니다. 삭제 후 재등록 해주세요.");
+        boolean existsNewFile = dto.getMainImage() != null && !dto.getMainImage().isEmpty();
+        boolean existsOriginMainImage = originMainImage != null && YesOrNo.isNo(originMainImage.getDelYn().getCode());
+        if(existsNewFile && existsOriginMainImage){
+            throw new YhErpException("메인 이미지가 이미 존재합니다. 삭제 후 재등록 해주세요.");
         }
 
         //이미지 등록 가능 최대 개수 검사
         Integer existsCont = productFileRepository.countImagesByProductId(id);
-        if(ABLE_UPLOAD_IMAGE_LENGTH > dto.getImages().size() + existsCont){
-            throw new RuntimeException("등록 가능한 이미지의 최대 개수를 초과했습니다.");
+        if(ABLE_UPLOAD_IMAGE_LENGTH < dto.getImages().size() + existsCont){
+            throw new YhErpException("등록 가능한 이미지의 최대 개수를 초과했습니다.");
         }
 
         Integer lastSort = productFileRepository.findLastSort(id);
@@ -142,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
         for(MultipartFile image : dto.getImages()) {
-            if(image == null){
+            if(image == null || image.isEmpty()){
                 continue;
             }
 
