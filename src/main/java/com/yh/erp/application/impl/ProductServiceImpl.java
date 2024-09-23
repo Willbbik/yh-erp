@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
         //물품 등록
         Product product = Product.builder()
             .category(dto.getCategory())
-            .name(dto.getName())
+            .name(dto.getProductName())
             .modelName(dto.getModelName())
             .size(dto.getSize())
             .price(dto.getPrice())

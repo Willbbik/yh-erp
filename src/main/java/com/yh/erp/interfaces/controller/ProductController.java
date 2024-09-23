@@ -20,17 +20,17 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/products")
+    @GetMapping("/api/products")
     public ResponseEntity<List<ProductDTO>> getProducts(ProductSearchReqDTO dto) throws Exception {
         return ResponseEntity.ok().body(productService.getProducts(dto));
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/api/products/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok().body(productService.getProduct(id));
     }
 
-    @PostMapping("/products")
+    @PostMapping("/api/products")
     public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto, MultipartHttpServletRequest request) throws Exception {
 
         dto.getImages().add(request.getFile("file1"));
@@ -43,7 +43,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.createProduct(dto));
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/api/products/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, ProductUpdateDTO dto, MultipartHttpServletRequest request) throws Exception {
 
         dto.getImages().add(request.getFile("file1"));
@@ -56,7 +56,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.updateProduct(id, dto));
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/api/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok().build();

@@ -11,7 +11,7 @@ public class ProductCreateDTO {
 
     private Long g2bNumber;
     private String category;
-    private String name;
+    private String productName;
     private String modelName;
     private String size;
     private Long price;
