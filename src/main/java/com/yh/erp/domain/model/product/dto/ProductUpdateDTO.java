@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class ProductUpdateDTO {
 
-    private Long g2bNumber;
+    private String g2bNumber;
     private String category;
     private String name;
     private String modelName;

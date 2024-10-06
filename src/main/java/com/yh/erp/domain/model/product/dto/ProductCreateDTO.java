@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class ProductCreateDTO {
 
-    private Long g2bNumber;
+    private String g2bNumber;
     private String category;
     private String productName;
     private String modelName;

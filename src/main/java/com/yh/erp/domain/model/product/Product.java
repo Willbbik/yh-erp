@@ -24,7 +24,7 @@ public class Product {
     private String category;
 
     @Column(name = "g2b_number")
-    private Long g2bNumber;
+    private String g2bNumber;
 
     @Column(name = "product_name")
     private String name;
@@ -52,7 +52,7 @@ public class Product {
     private LocalDateTime modAt;
 
     @Builder
-    public Product(Long g2bNumber, String category, String name, String modelName, String size, Long price) {
+    public Product(String g2bNumber, String category, String name, String modelName, String size, Long price) {
         this.g2bNumber = g2bNumber;
         this.category = category;
         this.name = name;
