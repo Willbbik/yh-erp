@@ -42,6 +42,15 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
     }
 
     @Override
+    public ProductFile findImageByFileId(Long fileId) {
+        return jqf.select(productFile)
+                .from(productFile)
+                .where(this.eqFileId(fileId),
+                        this.notDeleted())
+                .fetchOne();
+    }
+
+    @Override
     public List<ProductFile> findImagesById(Long productId) {
         return jqf.select(productFile)
                 .from(productFile)
@@ -85,6 +94,10 @@ public class JpaProductFileRepositoryImpl implements JpaProductFileRepository {
                     this.eqMainFileYn(YesOrNo.NO))
             .fetchOne()
             .intValue();
+    }
+
+    public BooleanExpression eqFileId(Long fileId) {
+        return fileId != null ? productFile.id.eq(fileId) : null;
     }
 
     public BooleanExpression eqProductId(Long productId) {

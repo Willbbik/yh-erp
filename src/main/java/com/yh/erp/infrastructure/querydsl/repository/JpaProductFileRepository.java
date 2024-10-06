@@ -9,6 +9,8 @@ public interface JpaProductFileRepository {
 
     ProductFile findMainImageById(Long productId);
 
+    ProductFile findImageByFileId(Long fileId);
+
     List<ProductFile> findImagesById(Long productId);
 
     void removeFileById(Long id);
