@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
@@ -31,16 +32,18 @@ public class ProductController {
     }
 
     @PostMapping("/api/products")
-    public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto, MultipartHttpServletRequest request) throws Exception {
+    public ResponseEntity<ProductDTO> createProduct(ProductCreateDTO dto,
+                                            @RequestPart(name = "mainImage", required = false) MultipartFile mainImage,
+                                            MultipartHttpServletRequest request) throws Exception {
 
         dto.getImages().add(request.getFile("file1"));
         dto.getImages().add(request.getFile("file2"));
         dto.getImages().add(request.getFile("file3"));
         dto.getImages().add(request.getFile("file4"));
         dto.getImages().add(request.getFile("file5"));
-        dto.setMainImage(request.getFile("mainImage"));
+//        dto.setMainImage(mainImage);
 
-        return ResponseEntity.ok().body(productService.createProduct(dto));
+        return ResponseEntity.ok().body(productService.createProduct(dto, mainImage));
     }
 
     @PutMapping("/api/products/{id}")

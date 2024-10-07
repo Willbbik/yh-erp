@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public ProductDTO createProduct(ProductCreateDTO dto) throws Exception {
+    public ProductDTO createProduct(ProductCreateDTO dto, MultipartFile mainImage) throws Exception {
 
         //물품 등록
         Product product = Product.builder()
@@ -68,8 +68,8 @@ public class ProductServiceImpl implements ProductService {
 
         //메인 이미지 저장
         ProductFile mainImageInfo = null;
-        if(dto.getMainImage() != null){
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), dto.getCategory(), sort);
+        if(mainImage != null){
+            mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), sort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
             sort++;
