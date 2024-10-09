@@ -36,7 +36,7 @@ server:
 
 #파일 업로드 경로
 file-config:
-  upload_path: /Users/min/Documents/yh-erp/file
+  upload_path: /Users/min/Documents/yh-erp
 
 firebase-config:
   database-url: https://yh-erp.firebaseio.com

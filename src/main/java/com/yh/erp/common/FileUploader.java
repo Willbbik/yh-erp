@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileUploader {
 
-    private static final String PRODUCT_PATH = "/product";
+    private static final String PRODUCT_PATH = "/files/product";
 
     private final FileProperties fileProperties;
 
@@ -47,11 +47,11 @@ public class FileUploader {
         String originalFilename = file.getOriginalFilename();
         String extension = StringUtils.getFilenameExtension(originalFilename);
         String newFileName = fileNameNoExt + "__" + UUID.randomUUID() + "." + extension;
-        String path = fileProperties.getUploadPath() + PRODUCT_PATH + directory;
+        String path = PRODUCT_PATH + directory + "/" + newFileName;
         String fileFullPath = fileProperties.getUploadPath() + PRODUCT_PATH + directory + "/" + newFileName;
 
         //디렉토리 생성
-        this.createDirectory(path);
+        this.createDirectory(fileProperties.getUploadPath() + path);
 
         //파일 생성
         File newFile = this.createFile(file, fileFullPath);
