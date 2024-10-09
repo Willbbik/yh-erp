@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public ProductDTO updateProduct(Long id, ProductUpdateDTO dto) throws Exception {
+    public ProductDTO updateProduct(Long id, ProductUpdateDTO dto, MultipartFile mainImage) throws Exception {
 
         Product product = productRepository.findByIdAndDelYn(id, YesOrNo.NO);
         if(product == null){
@@ -118,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
         productFileRepository.removeFilesByIds(id, dto.getDelImageIds());
 
         //메인이미지 중복 업로드 체크
-        boolean existsNewFile = dto.getMainImage() != null && !dto.getMainImage().isEmpty();
+        boolean existsNewFile = mainImage != null && !mainImage.isEmpty();
         boolean existsOriginMainImage = originMainImage != null && YesOrNo.isNo(originMainImage.getDelYn().getCode());
         if(existsNewFile && existsOriginMainImage){
             throw new YhErpException("메인 이미지가 이미 존재합니다. 삭제 후 재등록 해주세요.");
@@ -139,10 +139,10 @@ public class ProductServiceImpl implements ProductService {
 
         //메인 파일 업로드
         ProductFile mainImageInfo = null;
-        if(dto.getMainImage() != null && !dto.getMainImage().isEmpty()){
+        if(mainImage != null && !mainImage.isEmpty()){
             ++lastSort;
 
-            mainImageInfo = fileUploader.uploadProductImage(dto.getMainImage(), product.getId(), dto.getCategory(), lastSort);
+            mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), lastSort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
         }

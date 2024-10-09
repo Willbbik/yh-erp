@@ -16,7 +16,7 @@ public interface ProductService {
 
     ProductDTO createProduct(ProductCreateDTO dto, MultipartFile mainImage) throws Exception;
 
-    ProductDTO updateProduct(Long id, ProductUpdateDTO dto) throws Exception;
+    ProductDTO updateProduct(Long id, ProductUpdateDTO dto, MultipartFile mainImage) throws Exception;
 
     void deleteProduct(Long id);
 

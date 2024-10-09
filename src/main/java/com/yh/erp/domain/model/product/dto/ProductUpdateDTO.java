@@ -15,7 +15,7 @@ public class ProductUpdateDTO {
     private String modelName;
     private String size;
     private Long price;
-    private MultipartFile mainImage;
+//    private MultipartFile mainImage;
     private List<MultipartFile> images = new ArrayList<>();
     private String mainImageDelYn;
     private List<Long> delImageIds = new ArrayList<>();

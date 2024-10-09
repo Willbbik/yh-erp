@@ -47,16 +47,19 @@ public class ProductController {
     }
 
     @PutMapping("/api/products/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, ProductUpdateDTO dto, MultipartHttpServletRequest request) throws Exception {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id,
+                                                ProductUpdateDTO dto,
+                                                @RequestPart(name = "mainImage", required = false) MultipartFile mainImage,
+                                                MultipartHttpServletRequest request) throws Exception {
 
         dto.getImages().add(request.getFile("file1"));
         dto.getImages().add(request.getFile("file2"));
         dto.getImages().add(request.getFile("file3"));
         dto.getImages().add(request.getFile("file4"));
         dto.getImages().add(request.getFile("file5"));
-        dto.setMainImage(request.getFile("mainImage"));
+//        dto.setMainImage(request.getFile("mainImage"));
 
-        return ResponseEntity.ok().body(productService.updateProduct(id, dto));
+        return ResponseEntity.ok().body(productService.updateProduct(id, dto, mainImage));
     }
 
     @DeleteMapping("/api/products/{id}")
