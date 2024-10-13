@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
         if(mainImage != null){
             mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), sort);
             mainImageInfo.isMainFile();
-            product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
+            product.updateMainImageFullPath(mainImageInfo.getFilePath());
             sort++;
         }
 
@@ -144,7 +144,7 @@ public class ProductServiceImpl implements ProductService {
 
             mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), lastSort);
             mainImageInfo.isMainFile();
-            product.updateMainImageFullPath(mainImageInfo.getFileFullPath());
+            product.updateMainImageFullPath(mainImageInfo.getFilePath());
         }
 
         //기타 이미지들 저장
