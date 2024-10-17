@@ -4,7 +4,7 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://183.101.162.12:3306/erp_db
+    url: jdbc:mysql://175.198.73.174:3306/erp_db
     username: erp_user
     password: erp_qwe123!@#
   jpa:
@@ -13,10 +13,8 @@ spring:
     hibernate:
       ddl-auto: none
     properties:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQLDialect
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
 logging:
   level:
