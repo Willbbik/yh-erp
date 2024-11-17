@@ -12,7 +12,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuotationExcelGenerator {
 
@@ -67,6 +70,8 @@ public class QuotationExcelGenerator {
         createThreeHeader(sheet);
 
         //제목, 설명, 내역서 라인
+        createBodyHeader(sheet);
+        createBody(sheet);
 
     }
 
@@ -268,6 +273,37 @@ public class QuotationExcelGenerator {
             }
         }
     }
+
+    private static void createBodyHeader(Sheet sheet) {
+        Row row11 = sheet.createRow(11);
+        row11.setHeightInPoints(29);
+
+        List<String> headers = List.of("순번", "제품사진", "규격명/품명", "규격", "수량", "단가", "금액", "식별번호");
+
+        for(int i=0; i<sheet.getDefaultColumnWidth(); i++){
+            Cell cell = row11.createCell(i);
+            cell.setCellValue(headers.get(i));
+        }
+    }
+
+    //TODO List 데이터 파라미터 받아야됨
+    private static void createBody(Sheet sheet) {
+
+        Row row12 = sheet.createRow(12);
+        Row row13 = sheet.createRow(13);
+        row12.setHeightInPoints(55);
+        row13.setHeightInPoints(55);
+
+        List<String> datas = List.of("1", "", "HSTM100 /식판회수차", "1000*600*850", "1", "₩500,000", "₩500,000", "22899118");
+
+        for(int i=0; i<sheet.getDefaultColumnWidth(); i++){
+            Cell cell = row12.createCell(i);
+            cell.setCellValue(datas.get(i));
+            sheet.addMergedRegion(new CellRangeAddress(12, 13, i, i));
+        }
+
+    }
+
 
     private static CellStyle getCellBorder(Workbook workbook) {
         CellStyle borderedStyle = workbook.createCellStyle();
