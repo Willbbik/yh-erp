@@ -98,28 +98,34 @@ public class QuotationExcelGenerator {
         //일자값
         Cell cell2 = row1.createCell(2);
         cell2.setCellValue("2023년 11월 20일");
-        sheet.addMergedRegion(new CellRangeAddress(1, 3, 2, 4));
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 2, 3));
 
         //사업자등록번호
-        Cell cell5 = row1.createCell(5);
+        Cell cell5 = row1.createCell(4);
         cell5.setCellValue("사업자등록번호");
 
-        Cell cell6 = row1.createCell(6);
+        //사업자등록번호 값
+        Cell cell6 = row1.createCell(5);
         cell6.setCellValue("206-81-15871");
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 6));
 
         //상호
-        Cell cell7 = row2.createCell(5);
+        Cell cell7 = row2.createCell(4);
         cell7.setCellValue("상호");
 
-        Cell cell8 = row2.createCell(6);
+        //상호값
+        Cell cell8 = row2.createCell(5);
         cell8.setCellValue("(주) 유한정공");
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 6));
 
         //대표자
-        Cell cell9 = row3.createCell(5);
+        Cell cell9 = row3.createCell(4);
         cell9.setCellValue("대표자");
 
-        Cell cell10 = row3.createCell(6);
+        //대표자값
+        Cell cell10 = row3.createCell(5);
         cell10.setCellValue("옥영수");
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, 5, 6));
 
         //인감
         row1.createCell(7);
@@ -131,11 +137,13 @@ public class QuotationExcelGenerator {
         CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
 
         //각 셀마다 테두리 만들기
-//        for(Row row : rows) {
-//            for(int i=0; i<row.getLastCellNum(); i++) {
+        for(Row row : rows) {
+            row.setHeightInPoints(29);
+
+            for(int i=0; i<row.getLastCellNum(); i++) {
 //                row.getCell(i).setCellStyle(cellBorder);
-//            }
-//        }
+            }
+        }
     }
 
     private static void createSecondHeader(Sheet sheet) {
@@ -153,23 +161,25 @@ public class QuotationExcelGenerator {
         //수신값
         Cell cell2 = row4.createCell(2);
         cell2.setCellValue("천안 부대초등학교");
-        sheet.addMergedRegion(new CellRangeAddress(4, 5, 2, 4));
+        sheet.addMergedRegion(new CellRangeAddress(4, 5, 2, 3));
 
         //사업장소재지
-        Cell cell3= row4.createCell(5);
+        Cell cell3= row4.createCell(4);
         cell3.setCellValue("사업장소재지");
 
         //사업장소재지 값
-        Cell cell4 = row4.createCell(6);
+        Cell cell4 = row4.createCell(5);
         cell4.setCellValue("서울시 성동구 성수이로 18길 32-1");
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 5, 7));
 
         //업태및종목
-        Cell cell5 = row5.createCell(5);
+        Cell cell5 = row5.createCell(4);
         cell5.setCellValue("업태및종목");
 
         //업태및종목 값
-        Cell cell6 = row5.createCell(6);
+        Cell cell6 = row5.createCell(5);
         cell6.setCellValue("제조 · 도소매 / 주방기구 · 주방용품");
+        sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 7));
 
         //견적금액
         Cell cell7 = row6.createCell(0);
