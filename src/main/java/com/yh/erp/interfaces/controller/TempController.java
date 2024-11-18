@@ -1,6 +1,6 @@
 package com.yh.erp.interfaces.controller;
 
-import com.yh.erp.infrastructure.excel.QuotationExcelGenerator;
+import com.yh.erp.infrastructure.excel.ProcurementQuotationExcelGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ public class TempController {
 
     @GetMapping("/temp/excel")
     public ResponseEntity<byte[]> getTempExcel(){
-        return QuotationExcelGenerator.createPrecocityQuotationExcel("연습");
+        return ProcurementQuotationExcelGenerator.createExcel("연습");
     }
 
 }
