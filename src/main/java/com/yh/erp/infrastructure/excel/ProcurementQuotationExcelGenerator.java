@@ -1,5 +1,6 @@
 package com.yh.erp.infrastructure.excel;
 
+import com.yh.erp.domain.model.quotation.dto.ProcQuotationCreateDto;
 import com.yh.erp.infrastructure.error.YhErpException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -29,7 +30,23 @@ public class ProcurementQuotationExcelGenerator {
 
     private static final Integer DEFAULT_CELL_LENGTH = 8;
 
-    public static ResponseEntity<byte[]> createExcel(String excelName) {
+//    예시 데이터
+//    {
+//        "title": "신규테스트 조달 견적서",
+//            "quoteDate": "2024년 11월 21일",
+//            "customerName": "김포 부대초등학교",
+//            "businessNumber": "206-81-15871",
+//            "companyName": "(주) 유한정공",
+//            "ownerName": "옥수정",
+//            "companyLocation": "서울시 성동구 성수이로 18길 32-1",
+//            "companyType": "제조 · 도소매 / 주방기구 · 주방용품",
+//            "phoneNumber": "02-465-8555(대)",
+//            "faxNumber": "02-465-1314",
+//            "email": "yh21cc@naver.com",
+//            "totalPrice": "(₩22,160,000)",
+//            "strTotalPrice": "일금이천이백일십육만원정"
+//    }
+    public static ResponseEntity<byte[]> createExcel(String excelName, ProcQuotationCreateDto dto) {
         try {
             // 엑셀 생성
             Workbook workbook = new SXSSFWorkbook();
@@ -38,7 +55,7 @@ public class ProcurementQuotationExcelGenerator {
             Sheet sheet = createSheet(workbook);
 
             // 헤더 생성
-            createHeader(workbook, sheet);
+            createHeader(sheet, dto);
 
             // 바디 생성
             createBody(sheet);
@@ -94,20 +111,22 @@ public class ProcurementQuotationExcelGenerator {
     }
 
     //헤더 생성
-    private static void createHeader(Workbook workbook, Sheet sheet) {
+    private static void createHeader(Sheet sheet, ProcQuotationCreateDto dto) {
         //제목
-        createTitleHeader(workbook, sheet);
+        createTitleHeader(sheet);
         //일자
-        createFirstHeader(sheet);
+        createFirstHeader(sheet, dto);
         //수신
-        createSecondHeader(sheet);
+        createSecondHeader(sheet, dto);
         //제목 ~ 내역서 제목
-        createThreeHeader(sheet);
-        //데이터 ㅔ더
+        createThreeHeader(sheet, dto);
+        //데이터 헤더
         createBodyHeader(sheet);
     }
 
-    private static void createTitleHeader(Workbook workbook, Sheet sheet) {
+    private static void createTitleHeader(Sheet sheet) {
+        Workbook workbook = sheet.getWorkbook();
+
         Row row = sheet.getRow(PROCUREMENT_QUOTATION_ROW_START_INDEX);
         row.setHeightInPoints(50);
         Cell cell = row.getCell(0);
@@ -118,7 +137,7 @@ public class ProcurementQuotationExcelGenerator {
     }
 
     //일자 라인
-    private static void createFirstHeader(Sheet sheet) {
+    private static void createFirstHeader(Sheet sheet, ProcQuotationCreateDto dto) {
         int i1 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 1;
         int i2 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 2;
         int i3 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 3;
@@ -130,39 +149,31 @@ public class ProcurementQuotationExcelGenerator {
 
         //일자
         Cell cell1 = row1.getCell(0);
-        cell1.setCellValue("일자");
-        sheet.addMergedRegion(new CellRangeAddress(i1, i3, 0, 1));
-
-        //일자값
         Cell cell2 = row1.getCell(2);
-        cell2.setCellValue("2023년 11월 20일");
+        cell1.setCellValue("일자");
+        cell2.setCellValue(dto.getQuoteDate()); //ex) 2023년 11월 20일
+        sheet.addMergedRegion(new CellRangeAddress(i1, i3, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(i1, i3, 2, 3));
 
         //사업자등록번호
         Cell cell5 = row1.getCell(4);
-        cell5.setCellValue("사업자등록번호");
-
-        //사업자등록번호 값
         Cell cell6 = row1.getCell(5);
-        cell6.setCellValue("206-81-15871");
+        cell5.setCellValue("사업자등록번호");
+        cell6.setCellValue(dto.getBusinessNumber()); //ex) 206-81-15871
         sheet.addMergedRegion(new CellRangeAddress(i1, i1, 5, 6));
 
         //상호
         Cell cell7 = row2.getCell(4);
-        cell7.setCellValue("상호");
-
-        //상호값
         Cell cell8 = row2.getCell(5);
-        cell8.setCellValue("(주) 유한정공");
+        cell7.setCellValue("상호");
+        cell8.setCellValue(dto.getCompanyName()); //ex) (주) 유한정공
         sheet.addMergedRegion(new CellRangeAddress(i2, i2, 5, 6));
 
         //대표자
         Cell cell9 = row3.getCell(4);
-        cell9.setCellValue("대표자");
-
-        //대표자값
         Cell cell10 = row3.getCell(5);
-        cell10.setCellValue("옥영수");
+        cell9.setCellValue("대표자");
+        cell10.setCellValue(dto.getOwnerName()); //ex) 옥영수
         sheet.addMergedRegion(new CellRangeAddress(i3, i3, 5, 6));
 
         //인감
@@ -171,22 +182,20 @@ public class ProcurementQuotationExcelGenerator {
         row3.getCell(7);
         sheet.addMergedRegion(new CellRangeAddress(i1, i3, 7, 7));
 
-
 //        CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
 
         //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(29);
 
-            for(int i=0; i<row.getLastCellNum(); i++) {
+//            for(int i=0; i<row.getLastCellNum(); i++) {
 //                row.getCell(i).setCellStyle(cellBorder);
-            }
+//            }
         }
     }
 
     //수신 라인
-    private static void createSecondHeader(Sheet sheet) {
-
+    private static void createSecondHeader(Sheet sheet, ProcQuotationCreateDto dto) {
         int i4 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 4;
         int i5 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 5;
         int i6 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 6;
@@ -200,86 +209,71 @@ public class ProcurementQuotationExcelGenerator {
 
         //수신
         Cell cell1 = row4.getCell(0);
-        cell1.setCellValue("수신");
-        sheet.addMergedRegion(new CellRangeAddress(i4, i5, 0, 1));
-
-        //수신값
         Cell cell2 = row4.getCell(2);
-        cell2.setCellValue("천안 부대초등학교");
+        cell1.setCellValue("수신");
+        cell2.setCellValue(dto.getCustomerName()); //ex) 천안 부대초등학교
+        sheet.addMergedRegion(new CellRangeAddress(i4, i5, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(i4, i5, 2, 3));
 
         //사업장소재지
         Cell cell3= row4.getCell(4);
-        cell3.setCellValue("사업장소재지");
-
-        //사업장소재지 값
         Cell cell4 = row4.getCell(5);
-        cell4.setCellValue("서울시 성동구 성수이로 18길 32-1");
+        cell3.setCellValue("사업장소재지");
+        cell4.setCellValue(dto.getCompanyLocation()); //ex) 서울시 성동구 성수이로 18길 32-1
         sheet.addMergedRegion(new CellRangeAddress(i4, i4, 5, 7));
 
         //업태및종목
         Cell cell5 = row5.getCell(4);
-        cell5.setCellValue("업태및종목");
-
-        //업태및종목 값
         Cell cell6 = row5.getCell(5);
-        cell6.setCellValue("제조 · 도소매 / 주방기구 · 주방용품");
+        cell5.setCellValue("업태및종목");
+        cell6.setCellValue(dto.getCompanyType()); //ex) 제조 · 도소매 / 주방기구 · 주방용품
         sheet.addMergedRegion(new CellRangeAddress(i5, i5, 5, 7));
 
-        //## 견적금액
+        //견적금액 한글
         Cell cell7 = row6.getCell(0);
+        Cell cell8 = row6.getCell(2);
         cell7.setCellValue("견적금액");
+        cell8.setCellValue(dto.getStrTotalPrice()); //ex) 일금이천이백일십육만원정
         sheet.addMergedRegion(new CellRangeAddress(i6, i7, 0, 1));
-
-        //견적금액 한글값
-        Cell cell10 = row6.getCell(2);
-        cell10.setCellValue("일금이천이백일십육만원정");
         sheet.addMergedRegion(new CellRangeAddress(i6, i6, 2, 3));
 
-        //견적금액 숫자값
-        Cell cell11 = row7.getCell(2);
-        cell11.setCellValue("(₩22,160,000)");
+        //견적금액 숫자
+        Cell cell9 = row7.getCell(2);
+        cell9.setCellValue(dto.getTotalPrice()); //ex) (₩22,160,000)
         sheet.addMergedRegion(new CellRangeAddress(i7, i7, 2, 3));
 
         //전화번호
-        Cell cell12 = row6.getCell(4);
-        cell12.setCellValue("전화번호");
-
-        //전화번호 값
-        Cell cell13 = row6.getCell(5);
-        cell13.setCellValue("02-465-8555(대)");
+        Cell cell10 = row6.getCell(4);
+        Cell cell11 = row6.getCell(5);
+        cell10.setCellValue("전화번호");
+        cell11.setCellValue(dto.getPhoneNumber()); //ex) 02-465-8555(대)
 
         //FAX
-        Cell cell14 = row6.getCell(6);
-        cell14.setCellValue("FAX");
-
-        //FAX 값
-        Cell cell15 = row6.getCell(7);
-        cell15.setCellValue("02-465-1314");
+        Cell cell12 = row6.getCell(6);
+        Cell cell13 = row6.getCell(7);
+        cell12.setCellValue("FAX");
+        cell13.setCellValue(dto.getFaxNumber()); //ex) 02-465-1314
 
         //E-Mail
-        Cell cell16 = row7.getCell(4);
-        cell16.setCellValue("E-Mail");
-
-        //E-Mail 값
-        Cell cell17 = row7.getCell(5);
-        cell17.setCellValue("yh21cc@naver.com");
+        Cell cell14 = row7.getCell(4);
+        Cell cell15 = row7.getCell(5);
+        cell14.setCellValue("E-Mail");
+        cell15.setCellValue(dto.getEmail()); //ex) yh21cc@naver.com
         sheet.addMergedRegion(new CellRangeAddress(i7, i7, 5, 7));
 
-        CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
+//        CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
 
         //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(29);
-            for(int i=0; i<row.getLastCellNum(); i++) {
+//            for(int i=0; i<row.getLastCellNum(); i++) {
 //                row.getCell(i).setCellStyle(getHeaderCellStyle(sheet.getWorkbook()));
-            }
+//            }
         }
     }
 
     //제목 ~ 내역서 제목 라인
-    private static void createThreeHeader(Sheet sheet) {
-
+    private static void createThreeHeader(Sheet sheet, ProcQuotationCreateDto dto) {
         int i8 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 8;
         int i9 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 9;
         int i10 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 10;
@@ -291,38 +285,34 @@ public class ProcurementQuotationExcelGenerator {
 
         //제목
         Cell cell1 = row8.getCell(0);
-        cell1.setCellValue("제목");
-        sheet.addMergedRegion(new CellRangeAddress(i8, i8, 0, 1));
-
-        //제목값
         Cell cell2 = row8.getCell(2);
-        cell2.setCellValue("학교급식 현대화사업 급식기구 선정자료");
+        cell1.setCellValue("제목");
+        cell2.setCellValue(dto.getTitle()); //학교급식 현대화사업 급식기구 선정자료
+        sheet.addMergedRegion(new CellRangeAddress(i8, i8, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(i8, i8, 2, 7));
 
         //설명
         Cell cell3= row9.getCell(0);
-        cell3.setCellValue("아래와 같이 견적서를 제출합니다.");
-        sheet.addMergedRegion(new CellRangeAddress(i9, i9, 0, 7));
-
-        //내역서
         Cell cell4 = row10.getCell(0);
+        cell3.setCellValue("아래와 같이 견적서를 제출합니다.");
         cell4.setCellValue("내역서");
+        sheet.addMergedRegion(new CellRangeAddress(i9, i9, 0, 7));
+        sheet.addMergedRegion(new CellRangeAddress(i10, i10, 0, 7));
+
         cell4.setCellStyle(getHeaderCellStyle(sheet.getWorkbook(), (short) 26));
         row10.setHeightInPoints(50);
-        sheet.addMergedRegion(new CellRangeAddress(i10, i10, 0, 7));
 
         //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(40);
-            for(int i=0; i<row.getLastCellNum(); i++) {
+//            for(int i=0; i<row.getLastCellNum(); i++) {
 //                row.getCell(i).setCellStyle(getHeaderCellStyle(sheet.getWorkbook()));
-            }
+//            }
         }
     }
 
     //상품 헤더
     private static void createBodyHeader(Sheet sheet) {
-
         int i11 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 11;
 
         Row row11 = sheet.getRow(i11);
@@ -357,7 +347,6 @@ public class ProcurementQuotationExcelGenerator {
         }
 
     }
-
 
     private static CellStyle getCellBorder(Workbook workbook) {
         CellStyle borderedStyle = workbook.createCellStyle();

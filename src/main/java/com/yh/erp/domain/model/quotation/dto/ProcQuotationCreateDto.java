@@ -25,6 +25,8 @@ public class ProcQuotationCreateDto {
     private String email;
 
     //상품 정보
+    private String totalPrice;
+    private String strTotalPrice;
     private List<QuotationProductInfo> productInfos;
 
 }
