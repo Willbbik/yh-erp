@@ -4,11 +4,10 @@ import com.yh.erp.infrastructure.error.YhErpException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -30,11 +29,10 @@ public class ProcurementQuotationExcelGenerator {
 
     private static final Integer DEFAULT_CELL_LENGTH = 8;
 
-
     public static ResponseEntity<byte[]> createExcel(String excelName) {
         try {
             // 엑셀 생성
-            Workbook workbook = new XSSFWorkbook();
+            Workbook workbook = new SXSSFWorkbook();
 
             // 시트 생성
             Sheet sheet = createSheet(workbook);
@@ -83,9 +81,9 @@ public class ProcurementQuotationExcelGenerator {
         RegionUtil.setRightBorderColor(IndexedColors.BLACK.index, borderRegion, sheet);
 
         // Set column widths
-        sheet.setColumnWidth(0, 4000);
-        sheet.setColumnWidth(1, 8000);
-        sheet.setColumnWidth(2, 8000);
+        sheet.setColumnWidth(0, 3000);
+        sheet.setColumnWidth(1, 7000);
+        sheet.setColumnWidth(2, 10000);
         sheet.setColumnWidth(3, 6000);
         sheet.setColumnWidth(4, 5500);
         sheet.setColumnWidth(5, 8000);
@@ -97,13 +95,15 @@ public class ProcurementQuotationExcelGenerator {
 
     //헤더 생성
     private static void createHeader(Workbook workbook, Sheet sheet) {
-        //헤더
+        //제목
         createTitleHeader(workbook, sheet);
+        //일자
         createFirstHeader(sheet);
+        //수신
         createSecondHeader(sheet);
+        //제목 ~ 내역서 제목
         createThreeHeader(sheet);
-
-        //제목, 설명, 내역서 라인
+        //데이터 ㅔ더
         createBodyHeader(sheet);
     }
 
