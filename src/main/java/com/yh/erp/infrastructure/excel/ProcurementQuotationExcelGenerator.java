@@ -1,6 +1,7 @@
 package com.yh.erp.infrastructure.excel;
 
 import com.yh.erp.domain.model.quotation.dto.ProcQuotationCreateDto;
+import com.yh.erp.domain.model.quotation.dto.QuotationProductInfo;
 import com.yh.erp.infrastructure.error.YhErpException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -30,22 +31,6 @@ public class ProcurementQuotationExcelGenerator {
 
     private static final Integer DEFAULT_CELL_LENGTH = 8;
 
-//    예시 데이터
-//    {
-//        "title": "신규테스트 조달 견적서",
-//            "quoteDate": "2024년 11월 21일",
-//            "customerName": "김포 부대초등학교",
-//            "businessNumber": "206-81-15871",
-//            "companyName": "(주) 유한정공",
-//            "ownerName": "옥수정",
-//            "companyLocation": "서울시 성동구 성수이로 18길 32-1",
-//            "companyType": "제조 · 도소매 / 주방기구 · 주방용품",
-//            "phoneNumber": "02-465-8555(대)",
-//            "faxNumber": "02-465-1314",
-//            "email": "yh21cc@naver.com",
-//            "totalPrice": "(₩22,160,000)",
-//            "strTotalPrice": "일금이천이백일십육만원정"
-//    }
     public static ResponseEntity<byte[]> createExcel(String excelName, ProcQuotationCreateDto dto) {
         try {
             // 엑셀 생성
@@ -58,11 +43,12 @@ public class ProcurementQuotationExcelGenerator {
             createHeader(sheet, dto);
 
             // 바디 생성
-            createBody(sheet);
+            createBody(sheet, dto.getProductInfos());
 
+            //엑셀 반환
             return getResponseEntity(excelName, workbook);
         } catch (Exception e) {
-            throw new YhErpException("엑셀 생성 중 에러가 발생하였습니다.");
+            throw new YhErpException("엑셀 생성 중 에러가 발생하였습니다. 에러메시지: ", e.getMessage());
         }
     }
 
@@ -73,8 +59,11 @@ public class ProcurementQuotationExcelGenerator {
         Sheet sheet = workbook.createSheet();
         sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
 
+        //행
         for(int i=0; i<=DEFAULT_ROW_LENGTH; i++) {
             Row row = sheet.createRow(i);
+
+            //열
             for(int j=0; j<DEFAULT_CELL_LENGTH; j++) {
                 row.createCell(j).setCellStyle(headerCellStyle);
             }
@@ -326,24 +315,48 @@ public class ProcurementQuotationExcelGenerator {
         }
     }
 
-    //내역서 물품
-    private static void createBody(Sheet sheet) {
-        //TODO List 데이터 파라미터 받아야됨
-        int i12 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 12;
-        int i13 = PROCUREMENT_QUOTATION_ROW_START_INDEX + 13;
+    //데이터 목록
+    private static void createBody(Sheet sheet, List<QuotationProductInfo> productInfos) throws IllegalAccessException {
 
-        Row row12 = sheet.getRow(i12);
-        Row row13 = sheet.getRow(i13);
-        row12.setHeightInPoints(45);
-        row13.setHeightInPoints(45);
+        //로우 시작 번호.
+        int startRowIndex = PROCUREMENT_QUOTATION_ROW_START_INDEX + 12;
 
-        //임시 데이터
-        List<String> datas = List.of("1", "", "HSTM100 /식판회수차", "1000*600*850", "1", "₩500,000", "₩500,000", "22899118");
+        for(int i=1; i<=productInfos.size(); i++) {
+            QuotationProductInfo productInfo = productInfos.get(--i);
+            Row row = sheet.createRow(startRowIndex++);
+            row.setHeightInPoints(90);
 
-        for(int i=0; i<DEFAULT_CELL_LENGTH; i++){
-            Cell cell = row12.getCell(i);
-            cell.setCellValue(datas.get(i));
-            sheet.addMergedRegion(new CellRangeAddress(i12, i13, i, i));
+            //순번
+            Cell cell0 = row.createCell(0);
+            renderCellValue(cell0, i);
+
+            //이미지
+            Cell cell1 = row.createCell(1);
+            renderCellValue(cell1, productInfo.getImagePath());
+
+            //규격명/품명
+            Cell cell2 = row.createCell(2);
+            renderCellValue(cell2, productInfo.getModelName());
+
+            //규격
+            Cell cell3 = row.createCell(3);
+            renderCellValue(cell3, productInfo.getSize());
+
+            //수량
+            Cell cell4 = row.createCell(4);
+            renderCellValue(cell4, productInfo.getQuantity());
+
+            //단가
+            Cell cell5 = row.createCell(5);
+            renderCellValue(cell5, productInfo.getPrice());
+
+            //금액
+            Cell cell6 = row.createCell(6);
+            renderCellValue(cell6, productInfo.getTotalPrice());
+
+            //식별번호
+            Cell cell7 = row.createCell(7);
+            renderCellValue(cell7, productInfo.getG2bNumber());
         }
 
     }
@@ -390,6 +403,18 @@ public class ProcurementQuotationExcelGenerator {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(excelContent);
+    }
+
+    //셀 데이터 적용. 각 셀 데이터 타입이 달라질 수 있어서.
+    private static void renderCellValue(Cell cell, Object cellValue) {
+        //이외에 날짜, boolean 등등 필요에 따라 추가하면 됨
+        if (cellValue instanceof Number) {
+            Number numberValue = (Number) cellValue;
+            cell.setCellValue(numberValue.doubleValue());
+            return;
+        }
+
+        cell.setCellValue(cellValue == null ? "" : cellValue.toString());
     }
 
 }

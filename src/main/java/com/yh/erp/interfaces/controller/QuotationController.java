@@ -1,29 +1,24 @@
 package com.yh.erp.interfaces.controller;
 
-import com.yh.erp.application.ProductService;
-import com.yh.erp.domain.model.product.dto.ProductCreateDTO;
-import com.yh.erp.domain.model.product.dto.ProductDTO;
-import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
-import com.yh.erp.domain.model.product.dto.ProductUpdateDTO;
+import com.yh.erp.application.QuotationService;
+import com.yh.erp.domain.model.quotation.dto.ProcQuotationCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class QuotationController {
 
-    private final ProductService productService;
+    private final QuotationService quotationService;
 
-    @GetMapping("/api/quotation/procurement/create")
-    public ResponseEntity<List<ProductDTO>> createProcurementQuotation(ProductSearchReqDTO dto) throws Exception {
-        return ResponseEntity.ok().body(productService.getProducts(dto));
+    @PostMapping("/api/quotation/procurement/create")
+    public ResponseEntity<byte[]> createProcurementQuotation(@RequestBody ProcQuotationCreateDto dto) {
+        return quotationService.createProcQuotation(dto);
     }
 
 }
