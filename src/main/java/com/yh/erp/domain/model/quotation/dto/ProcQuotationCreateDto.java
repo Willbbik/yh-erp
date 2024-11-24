@@ -22,6 +22,7 @@ public class ProcQuotationCreateDto {
     private String ownerName;
     private String companyLocation;
     private String companyType;
+    private String companySealImagePath;
     private String phoneNumber;
     private String faxNumber;
     private String email;
