@@ -3,15 +3,22 @@ package com.yh.erp.infrastructure.excel;
 import com.yh.erp.domain.model.quotation.dto.ProcQuotationCreateDto;
 import com.yh.erp.domain.model.quotation.dto.QuotationProductInfo;
 import com.yh.erp.infrastructure.error.YhErpException;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.streaming.SXSSFDrawing;
+import org.apache.poi.xssf.streaming.SXSSFPicture;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -29,7 +36,7 @@ public class ProcurementQuotationExcelGenerator {
 
     private static final Integer DEFAULT_ROW_LENGTH = 15;
 
-    private static final Integer DEFAULT_CELL_LENGTH = 8;
+    private static final Integer DEFAULT_CELL_LENGTH = 7;
 
     public static ResponseEntity<byte[]> createExcel(String excelName, ProcQuotationCreateDto dto) {
         try {
@@ -55,46 +62,33 @@ public class ProcurementQuotationExcelGenerator {
     //시트 생성 및 사이즈 설정
     private static Sheet createSheet(Workbook workbook) {
 
-        CellStyle headerCellStyle = getHeaderCellStyle(workbook, (short) 16);
+        CellStyle cellStyle = getCellStyle(workbook, (short) 16);
         Sheet sheet = workbook.createSheet();
-        sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
+//        sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
 
         //행
         for(int i=0; i<=DEFAULT_ROW_LENGTH; i++) {
             Row row = sheet.createRow(i);
 
             //열
-            for(int j=0; j<DEFAULT_CELL_LENGTH; j++) {
-                row.createCell(j).setCellStyle(headerCellStyle);
+            for(int j=0; j<=DEFAULT_CELL_LENGTH; j++) {
+                row.createCell(j).setCellStyle(cellStyle);
             }
         }
 
-        CellRangeAddress cellAddresses = new CellRangeAddress(0, 1, 0, 7);
+        //맨 첫줄 여백 로우
+        CellRangeAddress cellAddresses = new CellRangeAddress(0, 1, 0, DEFAULT_CELL_LENGTH);
         sheet.addMergedRegion(cellAddresses);
 
-        CellRangeAddress borderRegion = new CellRangeAddress(PROCUREMENT_QUOTATION_ROW_START_INDEX, PROCUREMENT_QUOTATION_ROW_START_INDEX+11, 0, 7);
-
-        //테두리
-        RegionUtil.setBorderTop(BorderStyle.THIN, borderRegion, sheet);
-        RegionUtil.setBorderBottom(BorderStyle.THIN, borderRegion, sheet);
-        RegionUtil.setBorderLeft(BorderStyle.THIN, borderRegion, sheet);
-        RegionUtil.setBorderRight(BorderStyle.THIN, borderRegion, sheet);
-
-        //테두리 선
-        RegionUtil.setTopBorderColor(IndexedColors.BLACK.index, borderRegion, sheet);
-        RegionUtil.setBottomBorderColor(IndexedColors.BLACK.index, borderRegion, sheet);
-        RegionUtil.setLeftBorderColor(IndexedColors.BLACK.index, borderRegion, sheet);
-        RegionUtil.setRightBorderColor(IndexedColors.BLACK.index, borderRegion, sheet);
-
-        // Set column widths
+        //열 가로길이
         sheet.setColumnWidth(0, 3000);
         sheet.setColumnWidth(1, 7000);
         sheet.setColumnWidth(2, 10000);
-        sheet.setColumnWidth(3, 6000);
+        sheet.setColumnWidth(3, 8500);
         sheet.setColumnWidth(4, 5500);
         sheet.setColumnWidth(5, 8000);
-        sheet.setColumnWidth(6, 4000);
-        sheet.setColumnWidth(7, 4400);
+        sheet.setColumnWidth(6, 7000);
+        sheet.setColumnWidth(7, 5000);
 
         return sheet;
     }
@@ -113,16 +107,18 @@ public class ProcurementQuotationExcelGenerator {
         createBodyHeader(sheet);
     }
 
+    //견적서조달 제목 라인
     private static void createTitleHeader(Sheet sheet) {
         Workbook workbook = sheet.getWorkbook();
 
         Row row = sheet.getRow(PROCUREMENT_QUOTATION_ROW_START_INDEX);
         row.setHeightInPoints(50);
+
         Cell cell = row.getCell(0);
         cell.setCellValue("견적서 (조달)");
-        cell.setCellStyle(getHeaderCellStyle(workbook, (short) 26));
+        cell.setCellStyle(getCellStyle(workbook, (short) 26));
 
-        sheet.addMergedRegion(new CellRangeAddress(PROCUREMENT_QUOTATION_ROW_START_INDEX, PROCUREMENT_QUOTATION_ROW_START_INDEX, 0, 7));
+        sheet.addMergedRegion(new CellRangeAddress(PROCUREMENT_QUOTATION_ROW_START_INDEX, PROCUREMENT_QUOTATION_ROW_START_INDEX, 0, DEFAULT_CELL_LENGTH));
     }
 
     //일자 라인
@@ -138,48 +134,51 @@ public class ProcurementQuotationExcelGenerator {
 
         //일자
         Cell cell1 = row1.getCell(0);
-        Cell cell2 = row1.getCell(2);
         cell1.setCellValue("일자");
-        cell2.setCellValue(dto.getQuoteDate()); //ex) 2023년 11월 20일
         sheet.addMergedRegion(new CellRangeAddress(i1, i3, 0, 1));
+
+        //일자값
+        Cell cell2 = row1.getCell(2);
+        cell2.setCellValue(dto.getQuoteDate()); //ex) 2023년 11월 20일
         sheet.addMergedRegion(new CellRangeAddress(i1, i3, 2, 3));
 
         //사업자등록번호
         Cell cell5 = row1.getCell(4);
-        Cell cell6 = row1.getCell(5);
         cell5.setCellValue("사업자등록번호");
+
+        //사업자등록번호 값
+        Cell cell6 = row1.getCell(5);
         cell6.setCellValue(dto.getBusinessNumber()); //ex) 206-81-15871
         sheet.addMergedRegion(new CellRangeAddress(i1, i1, 5, 6));
 
         //상호
         Cell cell7 = row2.getCell(4);
-        Cell cell8 = row2.getCell(5);
         cell7.setCellValue("상호");
+
+        //상호 값
+        Cell cell8 = row2.getCell(5);
         cell8.setCellValue(dto.getCompanyName()); //ex) (주) 유한정공
         sheet.addMergedRegion(new CellRangeAddress(i2, i2, 5, 6));
 
         //대표자
         Cell cell9 = row3.getCell(4);
-        Cell cell10 = row3.getCell(5);
         cell9.setCellValue("대표자");
-        cell10.setCellValue(dto.getOwnerName()); //ex) 옥영수
+
+        //대표자 값
+        Cell cell10 = row3.getCell(5);
+        cell10.setCellValue(dto.getOwnerName()); //ex) 옥수정
         sheet.addMergedRegion(new CellRangeAddress(i3, i3, 5, 6));
 
         //인감
-        row1.getCell(7);
-        row2.getCell(7);
-        row3.getCell(7);
+        Cell cell11 = row1.getCell(7);
+        renderCellValue(cell11, "(인)");
         sheet.addMergedRegion(new CellRangeAddress(i1, i3, 7, 7));
 
-//        CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
+        //인감이미지
+        renderImageInCell(sheet, dto.getCompanySealImagePath(), 7, 8, i1, i3+1);
 
-        //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(29);
-
-//            for(int i=0; i<row.getLastCellNum(); i++) {
-//                row.getCell(i).setCellStyle(cellBorder);
-//            }
         }
     }
 
@@ -250,14 +249,8 @@ public class ProcurementQuotationExcelGenerator {
         cell15.setCellValue(dto.getEmail()); //ex) yh21cc@naver.com
         sheet.addMergedRegion(new CellRangeAddress(i7, i7, 5, 7));
 
-//        CellStyle cellBorder = getCellBorder(sheet.getWorkbook());
-
-        //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(29);
-//            for(int i=0; i<row.getLastCellNum(); i++) {
-//                row.getCell(i).setCellStyle(getHeaderCellStyle(sheet.getWorkbook()));
-//            }
         }
     }
 
@@ -274,29 +267,29 @@ public class ProcurementQuotationExcelGenerator {
 
         //제목
         Cell cell1 = row8.getCell(0);
-        Cell cell2 = row8.getCell(2);
         cell1.setCellValue("제목");
-        cell2.setCellValue(dto.getTitle()); //학교급식 현대화사업 급식기구 선정자료
         sheet.addMergedRegion(new CellRangeAddress(i8, i8, 0, 1));
+
+        //제목 값
+        Cell cell2 = row8.getCell(2);
+        cell2.setCellValue(dto.getTitle()); //학교급식 현대화사업 급식기구 선정자료
         sheet.addMergedRegion(new CellRangeAddress(i8, i8, 2, 7));
 
         //설명
         Cell cell3= row9.getCell(0);
-        Cell cell4 = row10.getCell(0);
         cell3.setCellValue("아래와 같이 견적서를 제출합니다.");
-        cell4.setCellValue("내역서");
         sheet.addMergedRegion(new CellRangeAddress(i9, i9, 0, 7));
+
+        //내역서
+        Cell cell4 = row10.getCell(0);
+        cell4.setCellValue("내역서");
         sheet.addMergedRegion(new CellRangeAddress(i10, i10, 0, 7));
 
-        cell4.setCellStyle(getHeaderCellStyle(sheet.getWorkbook(), (short) 26));
+        cell4.setCellStyle(getCellStyle(sheet.getWorkbook(), (short) 26));
         row10.setHeightInPoints(50);
 
-        //각 셀마다 테두리 만들기
         for(Row row : rows) {
             row.setHeightInPoints(40);
-//            for(int i=0; i<row.getLastCellNum(); i++) {
-//                row.getCell(i).setCellStyle(getHeaderCellStyle(sheet.getWorkbook()));
-//            }
         }
     }
 
@@ -316,62 +309,90 @@ public class ProcurementQuotationExcelGenerator {
     }
 
     //데이터 목록
-    private static void createBody(Sheet sheet, List<QuotationProductInfo> productInfos) throws IllegalAccessException {
+    private static void createBody(Sheet sheet, List<QuotationProductInfo> productInfos) {
 
         //로우 시작 번호.
         int startRowIndex = PROCUREMENT_QUOTATION_ROW_START_INDEX + 12;
+        CellStyle cellStyle = getCellStyle(sheet.getWorkbook(), (short) 16);
 
         for(int i=1; i<=productInfos.size(); i++) {
-            QuotationProductInfo productInfo = productInfos.get(--i);
-            Row row = sheet.createRow(startRowIndex++);
+            QuotationProductInfo productInfo = productInfos.get(i-1);
+            Row row = sheet.createRow(startRowIndex);
             row.setHeightInPoints(90);
 
             //순번
             Cell cell0 = row.createCell(0);
+            cell0.setCellStyle(cellStyle);
             renderCellValue(cell0, i);
 
             //이미지
             Cell cell1 = row.createCell(1);
-            renderCellValue(cell1, productInfo.getImagePath());
+            renderImageInCell(sheet, productInfo.getImagePath(), 1,2, startRowIndex, startRowIndex+1);
 
             //규격명/품명
             Cell cell2 = row.createCell(2);
+            cell2.setCellStyle(cellStyle);
             renderCellValue(cell2, productInfo.getModelName());
 
             //규격
             Cell cell3 = row.createCell(3);
+            cell3.setCellStyle(cellStyle);
             renderCellValue(cell3, productInfo.getSize());
 
             //수량
             Cell cell4 = row.createCell(4);
+            cell4.setCellStyle(cellStyle);
             renderCellValue(cell4, productInfo.getQuantity());
 
             //단가
             Cell cell5 = row.createCell(5);
+            cell5.setCellStyle(cellStyle);
             renderCellValue(cell5, productInfo.getPrice());
 
             //금액
             Cell cell6 = row.createCell(6);
+            cell6.setCellStyle(cellStyle);
             renderCellValue(cell6, productInfo.getTotalPrice());
 
             //식별번호
             Cell cell7 = row.createCell(7);
+            cell7.setCellStyle(cellStyle);
             renderCellValue(cell7, productInfo.getG2bNumber());
+
+            startRowIndex++;
         }
 
     }
 
-    private static CellStyle getCellBorder(Workbook workbook) {
-        CellStyle borderedStyle = workbook.createCellStyle();
-        borderedStyle.setBorderTop(BorderStyle.THIN);
-        borderedStyle.setBorderBottom(BorderStyle.THIN);
-        borderedStyle.setBorderLeft(BorderStyle.THIN);
-        borderedStyle.setBorderRight(BorderStyle.THIN);
+    private static void renderImageInCell(Sheet sheet, String imgFullPath, int startCol, int endCol, int startRow, int endRow) {
+        try (InputStream stream = new FileInputStream(imgFullPath)) {
+            byte[] bytes = IOUtils.toByteArray(stream);
+            int imageIndex = sheet.getWorkbook().addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
 
-        return borderedStyle;
+            XSSFClientAnchor anchor = new XSSFClientAnchor();
+            anchor.setCol1(startCol);
+            anchor.setCol2(endCol);
+            anchor.setRow1(startRow);
+            anchor.setRow2(endRow);
+            anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
+
+            // 이미지 위치와 크기 조정 (오프셋 적용)
+//            anchor.setDx1(500); // X 방향으로 200 오프셋
+//            anchor.setDy1(500); // Y 방향으로 200 오프셋
+//            anchor.setDx2(-500); // X 방향으로 끝 위치 조정
+//            anchor.setDy2(-500); // Y 방향으로 끝 위치 조정
+
+            //이미지 추가
+            SXSSFDrawing drawing = (SXSSFDrawing) sheet.createDrawingPatriarch();
+            SXSSFPicture picture = drawing.createPicture(anchor, imageIndex);
+
+        } catch (Exception e) {
+            throw new YhErpException("조달견적서 셀 이미지 생성 중 에러 발생!");
+        }
     }
 
-    private static CellStyle getHeaderCellStyle(Workbook workbook, short fontSize) {
+
+    private static CellStyle getCellStyle(Workbook workbook, short fontSize) {
         // Create a bold font for headers
         Font boldFont = workbook.createFont();
         boldFont.setFontHeightInPoints(fontSize);
@@ -393,6 +414,7 @@ public class ProcurementQuotationExcelGenerator {
     private static ResponseEntity<byte[]> getResponseEntity(String excelName, Workbook workbook) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         workbook.write(stream);
+        workbook.close();
         byte[] excelContent = stream.toByteArray();
 
         HttpHeaders headers = new HttpHeaders();
