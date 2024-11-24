@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * 견적서(조달) 생성 클래스
+ * 견적서(조달) 엑셀 생성 클래스
  *
  */
 public class ProcurementQuotationExcelGenerator {

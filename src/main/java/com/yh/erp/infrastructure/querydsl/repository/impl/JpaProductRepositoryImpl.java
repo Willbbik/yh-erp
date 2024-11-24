@@ -8,6 +8,7 @@ import com.yh.erp.domain.model.product.dto.ProductDTO;
 import com.yh.erp.domain.model.product.dto.ProductSearchReqDTO;
 import com.yh.erp.domain.shared.YesOrNo;
 import com.yh.erp.infrastructure.querydsl.repository.JpaProductRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -51,10 +52,7 @@ public class JpaProductRepositoryImpl implements JpaProductRepository {
             ))
             .from(product)
             .where(this.notDeleted(),
-                    this.containsG2bNumber(dto.getG2bNumber()),
-                    this.containsName(dto.getName()),
-                    this.containsModelName(dto.getModelName()),
-                    this.containsSize(dto.getSize()),
+                    this.containsSearchKeyword(dto.getSearchKeyword()),
                     this.betweenPrice(dto.getMinPrice(), dto.getMaxPrice()))
             .orderBy(product.id.desc())
             .fetch();
@@ -72,20 +70,17 @@ public class JpaProductRepositoryImpl implements JpaProductRepository {
         return id != null ? product.id.eq(id) : null;
     }
 
-    public BooleanExpression containsG2bNumber(Long g2bNumber) {
-        return g2bNumber != null ? product.g2bNumber.stringValue().contains(String.valueOf(g2bNumber)) : null;
-    }
+    public BooleanExpression containsSearchKeyword(String searchKeyword) {
+        if(StringUtils.isEmpty(searchKeyword)) {
+            return null;
+        }
 
-    public BooleanExpression containsName(String name) {
-        return name != null ? product.name.contains(name) : null;
-    }
+        BooleanExpression g2bNumber = product.g2bNumber.stringValue().contains(searchKeyword);
+        BooleanExpression name = product.name.contains(searchKeyword);
+        BooleanExpression modelName = product.modelName.contains(searchKeyword);
+        BooleanExpression size = product.size.contains(searchKeyword);
 
-    public BooleanExpression containsModelName(String modelName) {
-        return modelName != null ? product.modelName.contains(modelName) : null;
-    }
-
-    public BooleanExpression containsSize(String size) {
-        return size != null ? product.size.contains(size) : null;
+        return g2bNumber.or(name).or(modelName).or(size);
     }
 
     public BooleanExpression betweenPrice(Long minPrice, Long maxPrice) {

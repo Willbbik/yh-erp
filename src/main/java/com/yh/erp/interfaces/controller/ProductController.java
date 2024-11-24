@@ -22,7 +22,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/api/products")
-    public ResponseEntity<List<ProductDTO>> getProducts(ProductSearchReqDTO dto) throws Exception {
+    public ResponseEntity<List<ProductDTO>> getProducts(ProductSearchReqDTO dto) {
         return ResponseEntity.ok().body(productService.getProducts(dto));
     }
 
