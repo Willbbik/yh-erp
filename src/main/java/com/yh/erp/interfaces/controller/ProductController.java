@@ -36,11 +36,11 @@ public class ProductController {
                                             @RequestPart(name = "mainImage", required = false) MultipartFile mainImage,
                                             MultipartHttpServletRequest request) throws Exception {
 
-        dto.getImages().add(request.getFile("file1"));
-        dto.getImages().add(request.getFile("file2"));
-        dto.getImages().add(request.getFile("file3"));
-        dto.getImages().add(request.getFile("file4"));
-        dto.getImages().add(request.getFile("file5"));
+//        dto.getImages().add(request.getFile("file1"));
+//        dto.getImages().add(request.getFile("file2"));
+//        dto.getImages().add(request.getFile("file3"));
+//        dto.getImages().add(request.getFile("file4"));
+//        dto.getImages().add(request.getFile("file5"));
 //        dto.setMainImage(mainImage);
 
         return ResponseEntity.ok().body(productService.createProduct(dto, mainImage));

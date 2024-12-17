@@ -77,15 +77,27 @@ public class ProductServiceImpl implements ProductService {
 
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
-        for(MultipartFile image : dto.getImages()) {
-            if(image == null || image.isEmpty()){
-                continue;
-            }
+        ProductFile productFile = fileUploader.uploadProductImage(dto.getImages().get(0), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile);
+        sort++;
 
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), sort);
-            imageInfos.add(productFile);
-            sort++;
-        }
+        ProductFile productFile2 = fileUploader.uploadProductImage(dto.getImages().get(1), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile2);
+        sort++;
+
+        ProductFile productFile3 = fileUploader.uploadProductImage(dto.getImages().get(2), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile3);
+        sort++;
+
+//        for(MultipartFile image : dto.getImages()) {
+//            if(image == null || image.isEmpty()){
+//                continue;
+//            }
+//
+//            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), sort);
+//            imageInfos.add(productFile);
+//            sort++;
+//        }
 
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setMainImageInfo(mainImageInfo);
