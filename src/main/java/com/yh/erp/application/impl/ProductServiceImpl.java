@@ -66,9 +66,14 @@ public class ProductServiceImpl implements ProductService {
 
         Integer sort = 1;
 
+        String temp = null;
+        if(temp.equals("temp")) {
+            temp = "a";
+        }
+
         //메인 이미지 저장
         ProductFile mainImageInfo = null;
-        if(mainImage != null){
+        if(mainImage == null){
             mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), sort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFilePath());
@@ -77,15 +82,27 @@ public class ProductServiceImpl implements ProductService {
 
         //기타 이미지들 저장
         List<ProductFile> imageInfos = new ArrayList<>();
-        for(MultipartFile image : dto.getImages()) {
-            if(image == null || image.isEmpty()){
-                continue;
-            }
+        ProductFile productFile = fileUploader.uploadProductImage(dto.getImages().get(0), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile);
+        sort++;
 
-            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), sort);
-            imageInfos.add(productFile);
-            sort++;
-        }
+        ProductFile productFile2 = fileUploader.uploadProductImage(dto.getImages().get(1), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile2);
+        sort++;
+
+        ProductFile productFile3 = fileUploader.uploadProductImage(dto.getImages().get(2), product.getId(), dto.getCategory(), sort);
+        imageInfos.add(productFile3);
+        sort++;
+
+//        for(MultipartFile image : dto.getImages()) {
+//            if(image == null || image.isEmpty()){
+//                continue;
+//            }
+//
+//            ProductFile productFile = fileUploader.uploadProductImage(image, product.getId(), dto.getCategory(), sort);
+//            imageInfos.add(productFile);
+//            sort++;
+//        }
 
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setMainImageInfo(mainImageInfo);
@@ -101,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
         if(product == null){
             throw new YhErpException("존재하지 않는 상품입니다.");
         }
+
 
         //TODO 물리파일 삭제는 추후 스케줄러를 통해서 할 예정
 
