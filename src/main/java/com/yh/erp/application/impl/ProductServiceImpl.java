@@ -66,9 +66,14 @@ public class ProductServiceImpl implements ProductService {
 
         Integer sort = 1;
 
+        String temp = null;
+        if(temp.equals("temp")) {
+            temp = "a";
+        }
+
         //메인 이미지 저장
         ProductFile mainImageInfo = null;
-        if(mainImage != null){
+        if(mainImage == null){
             mainImageInfo = fileUploader.uploadProductImage(mainImage, product.getId(), dto.getCategory(), sort);
             mainImageInfo.isMainFile();
             product.updateMainImageFullPath(mainImageInfo.getFilePath());
